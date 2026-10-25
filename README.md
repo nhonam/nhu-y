@@ -86,7 +86,30 @@ ví dụ `2026-10-10T20:30:00`. Đồng hồ ngày / giờ / phút / giây sẽ 
 
 ---
 
-## 7. Những chỗ có thể sửa thêm
+## 7. Đổi vị trí & khoảng cách
+
+Trang có mục **"Khoảng cách"**: bản đồ vị trí của hai đứa và số km đường chim bay giữa hai người.
+
+Mở `index.html`, tìm `places: {` và sửa:
+
+```js
+places: {
+  a: { name: 'Nho Nam', city: 'TP. Hồ Chí Minh', lat: 10.8231, lng: 106.6297 },
+  b: { name: 'Như Ý', city: 'Hà Nội', lat: 21.0285, lng: 105.8542 },
+  note: '…nhưng chỉ cần nhắm mắt là thấy nhau.'
+},
+```
+
+- `lat` / `lng`: vĩ độ, kinh độ. Lấy bằng cách mở Google Maps → nhấn chuột phải đúng vị trí → bấm vào dãy số hiện ra để copy.
+- `name` / `city`: tên và thành phố hiển thị trên thẻ.
+- `note`: dòng chữ nhỏ dưới số km.
+
+> ⚠️ Mình đang tạm đặt **Nam ở TP.HCM – Ý ở Hà Nội** (1.138 km). Bạn sửa lại toạ độ cho đúng nhé!
+> Bản đồ tải từ Google Maps nên cần Internet; khi offline vẫn hiện khung pin + tên thành phố.
+
+---
+
+## 8. Những chỗ có thể sửa thêm
 
 | Muốn đổi | Tìm trong `index.html` |
 |---|---|
@@ -97,7 +120,7 @@ ví dụ `2026-10-10T20:30:00`. Đồng hồ ngày / giờ / phút / giây sẽ 
 
 ---
 
-## 8. Các hiệu ứng có trong trang
+## 9. Các hiệu ứng có trong trang
 
 - Màn hình mở đầu bằng trái tim đập, bung tim khi chạm.
 - Tim hồng trôi lơ lửng khắp nền, quầng sáng chuyển động chậm.
@@ -106,12 +129,13 @@ ví dụ `2026-10-10T20:30:00`. Đồng hồ ngày / giờ / phút / giây sẽ 
 - Đồng hồ đếm ngày bên nhau + đếm ngược tới kỷ niệm tiếp theo.
 - Ảnh dạng polaroid nghiêng nhẹ, bấm vào mở khung lớn kèm dòng chữ **"Nho Nam yêu Như Ý"**.
 - Video: thẻ phim chỉ tải khi bấm vào — mở trang nhanh, không lag; bấm để mở trình phát lớn.
+- **Khoảng cách**: bản đồ hai thành phố + số km đếm tăng dần khi cuộn tới.
 - Nút trái tim cuối trang → màn hình tỏ tình "Nho Nam yêu Như Ý" với tim mưa.
 - Thanh tiến trình cuộn, hiệu ứng hiện dần khi cuộn trang.
 
 ---
 
-## 9. Đưa lên mạng (tuỳ chọn)
+## 10. Đưa lên mạng (tuỳ chọn)
 
 Cách dễ nhất:
 
@@ -123,10 +147,11 @@ Hoặc dùng Vercel / GitHub Pages / Cloudflare Pages — chỉ cần tải cả
 
 ---
 
-## 10. Lưu ý
+## 11. Lưu ý
 
 - Cần Internet **lần đầu** để tải font đẹp (Google Fonts). Không có mạng trang vẫn chạy, chỉ đổi font.
-- Trang đã tối ưu tốc độ: **không tải video khi mở trang**, ảnh tải dần khi cuộn tới, nên mở rất nhanh và không giật.
+- Trang đã tối ưu tốc độ: **không tải video khi mở trang**, ảnh tải dần khi cuộn tới, bản đồ chỉ nhúng khi cuộn gần tới — nên mở rất nhanh và không giật.
+- Bản đồ cần Internet. Số km là **đường chim bay** (khoảng cách thẳng), không phải quãng đường di chuyển.
 - Nên dùng Chrome, Edge hoặc Cốc Cốc bản mới.
 - Nếu đổi tên file ảnh/video thì nhớ sửa lại trong `CONFIG` (phần đầu thẻ `<script>`).
 - Toàn bộ website nằm trong 1 file `index.html` — muốn sao lưu chỉ cần chép cả thư mục.

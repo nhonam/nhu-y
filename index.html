@@ -515,6 +515,83 @@ body.ready .topbar{opacity:1;transform:none;pointer-events:auto}
 .vmeta{position:absolute;left:20px;right:20px;bottom:18px;pointer-events:none}
 .vmeta h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.02rem,2vw,1.38rem);line-height:1.25}
 .vmeta p{margin:5px 0 0;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,214,234,.5)}
+/* ---------- Khoảng cách ---------- */
+.dist-places{
+  display:grid;gap:clamp(16px,2.6vw,26px);
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  max-width:980px;margin:0 auto;
+}
+@media (max-width:640px){ .dist-places{grid-template-columns:1fr} }
+
+.place{
+  position:relative;border-radius:26px;overflow:hidden;
+  background:linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 34px 70px -50px #000, inset 0 1px 0 rgba(255,255,255,.12);
+  transition:transform .5s var(--ease), box-shadow .5s, border-color .5s;
+}
+.place:hover{
+  transform:translateY(-5px);border-color:rgba(255,111,174,.35);
+  box-shadow:0 40px 80px -44px rgba(255,63,142,.45);
+}
+.map{
+  position:relative;aspect-ratio:16/10;overflow:hidden;
+  background:radial-gradient(circle at 50% 45%, #3a0b22, #1a0410 78%);
+}
+.map iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;
+  filter:grayscale(.45) brightness(.84) contrast(1.06) sepia(.12) hue-rotate(300deg) saturate(1.35);
+  opacity:0;transition:opacity .9s ease;
+}
+.map iframe.ready{opacity:1}
+.map-fallback{
+  position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:8px;
+  text-align:center;color:rgba(255,214,234,.55);pointer-events:none;
+}
+.map-fallback svg{width:32px;height:32px;fill:none;stroke:#ff6fae;stroke-width:1.3;filter:drop-shadow(0 0 12px rgba(255,63,142,.7))}
+.map-fallback span{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase}
+.place-info{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px 18px}
+.place-info h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,2vw,1.28rem);line-height:1.2}
+.place-info p{margin:4px 0 0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.map-link{
+  flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);
+  color:#ffd9ea;text-decoration:none;
+  transition:background .3s, transform .3s, border-color .3s;
+}
+.map-link svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.map-link:hover{background:rgba(255,111,174,.2);border-color:rgba(255,111,174,.45);transform:translateY(-2px)}
+
+.dist-link{
+  display:flex;align-items:center;gap:clamp(12px,2.4vw,22px);
+  max-width:840px;margin:clamp(26px,4vh,42px) auto 0;
+}
+.dash{
+  flex:1;height:1px;
+  background-image:linear-gradient(90deg, rgba(255,158,203,.5) 50%, transparent 0);
+  background-size:10px 1px;background-repeat:repeat-x;
+}
+.dist-badge{
+  flex:none;display:flex;align-items:baseline;gap:9px;
+  padding:13px 24px;border-radius:999px;white-space:nowrap;
+  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.02));
+  border:1px solid rgba(255,111,174,.32);
+  box-shadow:0 0 44px -14px rgba(255,63,142,.65), inset 0 1px 0 rgba(255,255,255,.16);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.dist-badge b{
+  font-family:var(--font-display);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:clamp(1.55rem,4vw,2.3rem);line-height:1;
+  background:linear-gradient(180deg,#fff,#ffd0e6 50%,#ff5fa2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.dist-badge .unit{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,214,234,.72)}
+.dist-note{
+  margin:16px auto 0;max-width:46ch;text-align:center;
+  font-family:var(--font-display);font-style:italic;
+  font-size:clamp(.92rem,1.6vw,1.05rem);color:rgba(255,194,222,.7);
+}
+
 /* ---------- Lá thư ---------- */
 .letter-card{
   position:relative;max-width:760px;margin:0 auto;
@@ -792,7 +869,12 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
 /* ---------- Responsive ---------- */
 @media (max-width:560px){
-  .nav a{padding:7px 11px;font-size:.74rem}
+  .nav{
+    max-width:calc(100vw - 86px);overflow-x:auto;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{flex:none;padding:7px 11px;font-size:.74rem}
   .brand{font-size:1rem;letter-spacing:.1em}
   .lb-nav{width:42px;height:42px;font-size:1.5rem}
   .lb-media img,.lb-media video{max-height:56vh}
@@ -800,8 +882,9 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   .tile{flex:1 1 0;min-width:0;max-width:110px}
   .scroll-cue{display:none}
 }
-@media (max-width:380px){
-  .nav a{padding:6px 8px;font-size:.7rem}
+@media (max-width:430px){
+  .nav a{padding:6px 9px;font-size:.7rem}
+  .brand{font-size:.92rem}
 }
 
 /* ---------- Giảm chuyển động ---------- */
@@ -854,6 +937,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   <nav class="nav" aria-label="Điều hướng">
     <a href="#gallery">Ảnh</a>
     <a href="#videos">Video</a>
+    <a href="#distance">Khoảng cách</a>
     <a href="#love">Lời nhắn</a>
   </nav>
 </header>
@@ -933,6 +1017,33 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
       <!-- Video sẽ được tạo tự động từ CONFIG.videos trong phần script -->
       <div class="vgrid" id="videoGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ KHOẢNG CÁCH ============ -->
+  <section class="section" id="distance">
+    <div class="shell">
+      <div class="shead reveal">
+        <p class="eyebrow">Khoảng cách</p>
+        <h2 class="shead-title">Xa mặt, không xa lòng</h2>
+        <p class="shead-sub">Hai thành phố, một khoảng cách — và một trái tim luôn hướng về nhau.</p>
+      </div>
+
+      <!-- Thẻ vị trí được tạo tự động từ CONFIG.places -->
+      <div class="dist-places">
+        <div class="reveal"><article class="place" id="placeA"></article></div>
+        <div class="reveal" style="--d:.12s"><article class="place" id="placeB"></article></div>
+      </div>
+
+      <div class="dist-link reveal">
+        <span class="dash" aria-hidden="true"></span>
+        <div class="dist-badge">
+          <b id="distanceVal">0</b><span class="unit">km</span>
+        </div>
+        <span class="dash" aria-hidden="true"></span>
+      </div>
+
+      <p class="dist-note reveal" id="distNote"></p>
     </div>
   </section>
 
@@ -1053,7 +1164,15 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     videos: [
       { src: 'video-1.mp4', title: 'Thước phim đầu tiên của chúng mình', note: 'Bấm để xem', poster: 'anh-2.jpg' },
       { src: 'video-2.mp4', title: 'Tấm hình mà anh thích nhất', note: 'Bấm để xem', poster: 'anh-6.jpg' }
-    ]
+    ],
+
+    // Vị trí của hai đứa — sửa toạ độ tại đây.
+    // Lấy toạ độ: mở Google Maps → nhấn chuột phải đúng chỗ → bấm vào dãy số hiện ra để copy.
+    places: {
+      a: { name: 'Nho Nam', city: 'TP. Hồ Chí Minh', lat: 10.863776, lng: 106.804723 },
+      b: { name: 'Như Ý', city: 'Hà Nội', lat: 21.0285, lng: 105.8542 },
+      note: '…nhưng chỉ cần nhắm mắt là thấy nhau.'
+    }
   };
 
   /* ============================================================
@@ -1624,6 +1743,131 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     videoGrid.appendChild(wrap);
     revealIO.observe(wrap);
   });
+
+  /* ============================================================
+     KHOẢNG CÁCH & VỊ TRÍ
+     ============================================================ */
+
+  const PIN_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
+  const ARROW_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>';
+
+  const PLACES = CONFIG.places;
+  const distanceValEl = $('#distanceVal');
+  const distNoteEl = $('#distNote');
+
+  function haversineKm(a, b) {
+    const R = 6371;
+    const toRad = d => (d * Math.PI) / 180;
+    const dLat = toRad(b.lat - a.lat);
+    const dLng = toRad(b.lng - a.lng);
+    const h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+
+  const placesOK = !!(PLACES && PLACES.a && PLACES.b &&
+    isFinite(PLACES.a.lat) && isFinite(PLACES.a.lng) &&
+    isFinite(PLACES.b.lat) && isFinite(PLACES.b.lng));
+
+  if (placesOK && distanceValEl && distNoteEl) {
+    distNoteEl.textContent = PLACES.note || '';
+
+    /* Khoảng cách đường chim bay */
+    const km = Math.max(0, Math.round(haversineKm(PLACES.a, PLACES.b)));
+
+    /* Bản đồ chỉ được nhúng khi cuộn tới gần → không làm nặng lúc mở trang */
+    const mapIO = ('IntersectionObserver' in window)
+      ? new IntersectionObserver((entries, obs) => {
+          entries.forEach(en => {
+            if (!en.isIntersecting) return;
+            obs.unobserve(en.target);
+            if (en.target.__loadMap) en.target.__loadMap();
+          });
+        }, { rootMargin: '320px 0px' })
+      : null;
+
+    function buildPlace(el, place) {
+      if (!el || !place) return;
+
+      const mapLink = 'https://www.google.com/maps/search/?api=1&query=' + place.lat + ',' + place.lng;
+
+      el.innerHTML =
+        '<div class="map">' +
+          '<div class="map-fallback">' + PIN_SVG + '<span>' + escapeHtml(place.city) + '</span></div>' +
+        '</div>' +
+        '<div class="place-info">' +
+          '<div><h3>' + escapeHtml(place.name) + '</h3><p>' + escapeHtml(place.city) + '</p></div>' +
+          '<a class="map-link" href="' + mapLink + '" target="_blank" rel="noopener" ' +
+            'aria-label="Mở bản đồ ' + escapeHtml(place.city) + '">' + ARROW_SVG + '</a>' +
+        '</div>';
+
+      const mapEl = el.querySelector('.map');
+      let mapDone = false;
+
+      function loadMap() {
+        if (mapDone || navigator.onLine === false) return;
+        mapDone = true;
+
+        const frame = document.createElement('iframe');
+        frame.title = 'Bản đồ ' + place.city;
+        frame.loading = 'lazy';
+        frame.src = 'https://maps.google.com/maps?q=' + place.lat + ',' + place.lng +
+          '&z=13&hl=vi&output=embed';
+        frame.addEventListener('load', () => frame.classList.add('ready'));
+        mapEl.appendChild(frame);
+      }
+
+      if (mapIO) {
+        mapEl.__loadMap = loadMap;
+        mapIO.observe(mapEl);
+      } else {
+        loadMap();
+      }
+    }
+
+    buildPlace($('#placeA'), PLACES.a);
+    buildPlace($('#placeB'), PLACES.b);
+
+    /* Đếm số km khi cuộn tới */
+    let distDone = false;
+
+    function runDistance() {
+      if (distDone) return;
+      distDone = true;
+
+      if (reduceMotion) {
+        distanceValEl.textContent = km.toLocaleString('vi-VN');
+        return;
+      }
+
+      const dur = 1700;
+      const t0 = performance.now();
+      const step = t => {
+        const k = Math.min(1, (t - t0) / dur);
+        const eased = 1 - Math.pow(1 - k, 3);
+        distanceValEl.textContent = Math.round(km * eased).toLocaleString('vi-VN');
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    if ('IntersectionObserver' in window) {
+      const distIO = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          runDistance();
+          distIO.disconnect();
+        });
+      }, { threshold: 0.3 });
+      distIO.observe($('.dist-link'));
+    } else {
+      runDistance();
+    }
+  } else {
+    const distSection = $('#distance');
+    if (distSection) distSection.style.display = 'none';
+  }
 
   /* ============================================================
      LIGHTBOX
