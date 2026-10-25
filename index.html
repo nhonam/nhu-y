@@ -1944,6 +1944,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     lbVideo.src = entry.url;
     lbSub.textContent = entry.title || '';
     lbVideo.play().catch(() => {});
+    duckMusic(true);   /* nhạc nền nhỏ hẳn đi để nghe rõ tiếng video */
     openLightbox();
   }
 
@@ -1958,6 +1959,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     lb.classList.remove('open');
     lb.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('locked');
+    if (lbMode === 'video') duckMusic(false);
     clearVideo();
     setTimeout(() => { lbImg.removeAttribute('src'); }, 450);
   }
@@ -2032,8 +2034,22 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
   const bgm = $('#bgm');
   const musicBtn = $('#musicBtn');
+  const MUSIC_VOL = 0.55;      /* âm lượng bình thường */
+  const MUSIC_DUCK = 0.07;     /* hạ rất nhỏ khi đang xem video */
   let musicReady = false;
+  let musicDucked = false;
   let volAnim = 0;
+
+  function musicTarget() {
+    return musicDucked ? MUSIC_DUCK : MUSIC_VOL;
+  }
+
+  /* Hạ nhạc nền xuống rất nhỏ khi mở video, trả lại khi đóng */
+  function duckMusic(on) {
+    musicDucked = on;
+    if (bgm.paused) return;
+    fadeTo(musicTarget(), on ? 500 : 1200);
+  }
 
   function setMusicUI(on) {
     musicBtn.classList.toggle('on', on);
@@ -2059,7 +2075,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     }
     bgm.play().then(() => {
       bgm.volume = 0;
-      fadeTo(0.55, 2600);
+      fadeTo(musicTarget(), 2600);
       setMusicUI(true);
     }).catch(() => {
       setMusicUI(false);
