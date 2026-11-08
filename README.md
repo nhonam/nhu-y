@@ -62,7 +62,51 @@ videos: [
 
 ---
 
-## 5. Thêm nhạc nền
+## 5. Mục "Từng ngày chờ được gặp em"
+
+Mục này có **2 bên, mỗi bên 5 ảnh** (tổng 10 khung): ảnh của Nam bên trái, ảnh của Ý bên phải.
+
+1. Chép 5 ảnh của Nam vào `images/`, đặt tên `cho-nam-1.jpg` … `cho-nam-5.jpg`.
+2. Chép 5 ảnh của Ý vào `images/`, đặt tên `cho-y-1.jpg` … `cho-y-5.jpg`.
+3. Ảnh thiếu sẽ hiện khung ghi đúng tên file cần thêm. Bấm vào ảnh để xem lớn.
+
+Muốn đổi chú thích / thêm bớt ảnh, tìm `waiting: {` trong `index.html`:
+
+```js
+waiting: {
+  a: { photos: [ { src: 'cho-nam-1', caption: '...' }, ... ] },
+  b: { photos: [ { src: 'cho-y-1', caption: '...' }, ... ] }
+}
+```
+
+**Đếm ngược ngày gặp lại:** đã đặt sẵn **23:30 ngày 20/11/2026** — anh từ TP.HCM ra Hà Nội gặp em.
+Muốn đổi ngày hoặc địa điểm, tìm:
+
+```js
+nextMeet: '2026-11-20T23:30:00',
+nextMeetPlace: 'Hà Nội · 23:30 · 20.11.2026',
+```
+
+Để trống `nextMeet` (`''`) thì mục này hiện lời nhắn chờ thay vì đồng hồ đếm ngược.
+
+> Ảnh trong mục này **không còn nhãn "Ngày 01, Ngày 02…"** — vì anh đã chờ cả tháng,
+> không phải chỉ 10 ngày. 10 khung chỉ là 10 tấm ảnh của hai đứa.
+
+### Vé máy bay, hộp thư, checklist
+
+Ba phần này nằm ngay dưới đồng hồ đếm ngược:
+
+- **Vé máy bay Sài Gòn → Hà Nội**: tìm `boarding: {` để đổi chuyến bay, giờ, ghế, cổng.
+- **Ảnh máy bay thật**: thả ảnh vào `images/` và đặt tên **`may-bay.jpg`**.
+  Muốn đổi tên file / chú thích, tìm `boardingPhoto: {`. Ảnh thiếu sẽ hiện khung hướng dẫn.
+- **Hộp thư chỉ mở đúng đêm gặp**: tìm `capsule: {`. Sửa `openAt` để đổi thời điểm mở thư;
+  sửa `body: [ ... ]` để đổi nội dung lá thư. Trước giờ mở, bấm vào chỉ hiện lời nhắc.
+- **Checklist khi gặp nhau**: tìm `checklist: {` và sửa `items: [ ... ]`.
+  Trạng thái tick được lưu riêng trong trình duyệt (localStorage), không gửi đi đâu cả.
+
+---
+
+## 6. Thêm nhạc nền
 
 Chép 1 file nhạc vào **`music/`** và đổi tên thành **`song.mp3`**.
 
@@ -70,7 +114,7 @@ Nhạc sẽ tự bật khi bấm mở món quà. Ở góc phải dưới có nú
 
 ---
 
-## 6. Đổi ngày bắt đầu yêu
+## 7. Đổi ngày bắt đầu yêu
 
 Mở `index.html`, tìm dòng:
 
@@ -86,7 +130,7 @@ ví dụ `2026-10-10T20:30:00`. Đồng hồ ngày / giờ / phút / giây sẽ 
 
 ---
 
-## 7. Đổi vị trí & khoảng cách
+## 8. Đổi vị trí & khoảng cách
 
 Trang có mục **"Khoảng cách"**: bản đồ vị trí của hai đứa và số km đường chim bay giữa hai người.
 
@@ -109,18 +153,24 @@ places: {
 
 ---
 
-## 8. Những chỗ có thể sửa thêm
+## 9. Những chỗ có thể sửa thêm
 
 | Muốn đổi | Tìm trong `index.html` |
 |---|---|
 | Tên hiển thị | Gõ Ctrl + H, thay `Nho Nam` và `Như Ý` |
+| Ảnh "Ngày chờ" (5 ảnh mỗi bên) | Tìm `waiting: {` |
+| Ngày gặp lại + địa điểm | Tìm `nextMeet:` |
+| Vé máy bay Sài Gòn → Hà Nội | Tìm `boarding: {` |
+| Ảnh máy bay thật | Thêm `images/may-bay.jpg` hoặc sửa `boardingPhoto: {` |
+| Hộp thư mở đêm gặp | Tìm `capsule: {` |
+| Checklist khi gặp nhau | Tìm `checklist: {` |
 | Lá thư | Tìm `<!-- ✏️ Sửa lá thư ở đây -->` |
 | Lời tỏ tình toàn màn hình | Tìm `id="loveOverlay"` |
 | Màu sắc | Phần `:root{ --pink-400: ... }` đầu file CSS |
 
 ---
 
-## 9. Các hiệu ứng có trong trang
+## 10. Các hiệu ứng có trong trang
 
 - Màn hình mở đầu bằng trái tim đập, bung tim khi chạm.
 - Tim hồng trôi lơ lửng khắp nền, quầng sáng chuyển động chậm.
@@ -130,12 +180,18 @@ places: {
 - Ảnh dạng polaroid nghiêng nhẹ, bấm vào mở khung lớn kèm dòng chữ **"Nho Nam yêu Như Ý"**.
 - Video: thẻ phim chỉ tải khi bấm vào — mở trang nhanh, không lag; bấm để mở trình phát lớn.
 - **Khoảng cách**: bản đồ hai thành phố + số km đếm tăng dần khi cuộn tới.
+- **Từng ngày chờ được gặp em**: 2 bên ảnh (5 ảnh mỗi người), cầu trái tim ở giữa,
+  tuyến Sài Gòn → Hà Nội và đồng hồ đếm ngược tới 23:30 ngày 20/11/2026.
+- **Vé máy bay** Sài Gòn → Hà Nội dạng boarding pass, có ngày giờ, ghế, cổng.
+- **Ảnh máy bay thật** ngay dưới vé — anh tự thêm `images/may-bay.jpg`, bấm vào xem lớn.
+- **Hộp thư chờ ngày gặp**: bị khoá tới đúng đêm gặp, mở ra một lá thư viết sẵn.
+- **Checklist khi gặp nhau**: tick được từng việc, tiến độ lưu lại trên trình duyệt.
 - Nút trái tim cuối trang → màn hình tỏ tình "Nho Nam yêu Như Ý" với tim mưa.
 - Thanh tiến trình cuộn, hiệu ứng hiện dần khi cuộn trang.
 
 ---
 
-## 10. Đưa lên mạng (tuỳ chọn)
+## 11. Đưa lên mạng (tuỳ chọn)
 
 Cách dễ nhất:
 
@@ -147,7 +203,7 @@ Hoặc dùng Vercel / GitHub Pages / Cloudflare Pages — chỉ cần tải cả
 
 ---
 
-## 11. Lưu ý
+## 12. Lưu ý
 
 - Cần Internet **lần đầu** để tải font đẹp (Google Fonts). Không có mạng trang vẫn chạy, chỉ đổi font.
 - Trang đã tối ưu tốc độ: **không tải video khi mở trang**, ảnh tải dần khi cuộn tới, bản đồ chỉ nhúng khi cuộn gần tới — nên mở rất nhanh và không giật.

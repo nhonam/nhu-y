@@ -515,6 +515,600 @@ body.ready .topbar{opacity:1;transform:none;pointer-events:auto}
 .vmeta{position:absolute;left:20px;right:20px;bottom:18px;pointer-events:none}
 .vmeta h3{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.02rem,2vw,1.38rem);line-height:1.25}
 .vmeta p{margin:5px 0 0;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,214,234,.5)}
+
+/* ---------- Từng ngày chờ được gặp em ---------- */
+.wait{position:relative;overflow:hidden}
+.wait::before{
+  content:'';position:absolute;left:50%;top:12%;transform:translateX(-50%);
+  width:min(980px,120vw);height:min(980px,120vw);border-radius:50%;
+  background:radial-gradient(circle, rgba(255,63,142,.11), transparent 68%);
+  pointer-events:none;
+}
+.wait > .shell{position:relative}
+
+.wait-pair{
+  display:grid;align-items:stretch;
+  grid-template-columns:minmax(0,1fr) clamp(44px,6vw,82px) minmax(0,1fr);
+  gap:clamp(12px,1.8vw,22px);
+}
+.wp-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:clamp(13px,1.8vw,20px);
+  border-radius:clamp(20px,3vw,28px);
+  background:linear-gradient(165deg, rgba(255,255,255,.075), rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 36px 80px -54px #000, inset 0 1px 0 rgba(255,255,255,.13);
+}
+.wp-card::before{
+  content:'';position:absolute;inset:-40% -30% auto;height:70%;z-index:-1;
+  background:radial-gradient(circle at 30% 30%, var(--wp-glow, rgba(255,111,174,.2)), transparent 62%);
+  pointer-events:none;
+}
+.wp-card.a{--wp-glow:rgba(255,111,174,.22)}
+.wp-card.b{--wp-glow:rgba(196,132,255,.18)}
+
+.wp-head{display:flex;align-items:center;gap:12px;padding:2px 3px 14px}
+.wp-ava{
+  flex:none;width:clamp(38px,5vw,48px);aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:#2a0313;
+  background:linear-gradient(145deg,#ffe0ef,#ff8fc7 55%,#ff5fa2);
+  box-shadow:0 0 26px -6px rgba(255,63,142,.75), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.wp-card.b .wp-ava{
+  background:linear-gradient(145deg,#f2e7ff,#c9a2ff 55%,#a76bff);
+  box-shadow:0 0 26px -6px rgba(180,110,255,.7), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.wp-id{min-width:0;flex:1}
+.wp-id b{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(1.02rem,1.6vw,1.22rem);line-height:1.15}
+.wp-id span{
+  display:block;margin-top:3px;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,214,234,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.wp-days{
+  flex:none;padding:5px 11px;border-radius:999px;white-space:nowrap;
+  font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;
+  color:#ffd7ea;background:rgba(255,111,174,.13);border:1px solid rgba(255,111,174,.28);
+}
+.wp-card.b .wp-days{color:#e9d8ff;background:rgba(196,132,255,.12);border-color:rgba(196,132,255,.28)}
+
+.wp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,1.2vw,12px)}
+.wp-shot{
+  position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;isolation:isolate;
+  border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(160deg,#3a0b22,#1d0410);
+  box-shadow:0 18px 34px -26px #000;
+  cursor:pointer;padding:0;margin:0;text-align:left;color:#fff;
+  transition:transform .5s var(--ease), box-shadow .5s, border-color .5s;
+}
+.wp-shot:first-child{grid-column:1 / -1;aspect-ratio:16/10}
+.wp-shot:hover,.wp-shot:focus-visible{
+  transform:translateY(-4px);
+  border-color:rgba(255,158,203,.5);
+  box-shadow:0 26px 48px -26px rgba(255,63,142,.55);
+}
+.wp-shot img{
+  position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;filter:saturate(.94);
+  transition:opacity .7s ease, transform .9s var(--ease), filter .6s;
+}
+.wp-shot img.in{opacity:1}
+.wp-shot:hover img{transform:scale(1.06);filter:saturate(1.06)}
+.wp-shot::after{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg, rgba(10,1,7,.05) 28%, rgba(10,1,7,.1) 48%, rgba(10,1,7,.88) 100%);
+}
+.wp-cap{
+  position:absolute;left:12px;right:12px;bottom:10px;z-index:2;
+  font-family:var(--font-display);font-style:italic;font-size:.78rem;line-height:1.3;
+  color:#ffe8f3;text-shadow:0 2px 14px rgba(0,0,0,.65);
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.wp-shot:first-child .wp-cap{left:16px;right:16px;bottom:14px;font-size:clamp(.86rem,1.5vw,1rem)}
+.wp-cap:empty{display:none}
+.wp-skel{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(100deg,#2a0a1c 20%,#43122e 40%,#2a0a1c 60%);
+  background-size:220% 100%;animation:skel 1.4s linear infinite;
+}
+.wp-shot.loading{border-color:rgba(255,255,255,.08)}
+.wp-shot.is-empty{
+  background:
+    repeating-linear-gradient(45deg, rgba(255,111,174,.05) 0 12px, rgba(255,111,174,.1) 12px 24px),
+    linear-gradient(160deg,#320b20,#18030d);
+  outline:1px dashed rgba(255,158,203,.28);outline-offset:-8px;
+}
+.wp-shot.is-empty::after{display:none}
+.wp-ph{
+  position:absolute;inset:0;z-index:2;display:grid;place-items:center;
+  gap:5px;padding:10px;text-align:center;color:#ffc2de;
+}
+.wp-ph svg{width:22px;height:22px;fill:none;stroke:#ff9ecb;stroke-width:1.2;opacity:.75}
+.wp-ph b{font-size:.65rem;font-weight:500;letter-spacing:.04em}
+.wp-ph code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.5rem;padding:2px 7px;border-radius:999px;
+  background:rgba(255,111,174,.12);color:#ffb3d6;word-break:break-all;
+}
+
+.wait-total{
+  margin:clamp(18px,3vh,26px) auto 0;text-align:center;
+  font-family:var(--font-display);font-style:italic;
+  font-size:clamp(.9rem,1.7vw,1.05rem);line-height:1.5;
+  color:rgba(255,194,222,.68);
+}
+
+.wp-bridge{position:relative;display:grid;place-items:center}
+.wp-bridge::before{
+  content:'';position:absolute;top:6%;bottom:6%;left:50%;width:1px;transform:translateX(-50%);
+  background-image:linear-gradient(180deg, rgba(255,158,203,.55) 50%, transparent 0);
+  background-size:1px 11px;background-repeat:repeat-y;
+}
+.wp-heart{
+  position:relative;z-index:1;display:grid;place-items:center;
+  width:clamp(38px,4.6vw,52px);aspect-ratio:1;border-radius:50%;
+  font-size:1.1rem;line-height:1;color:#ff8fc7;
+  background:radial-gradient(circle at 50% 35%, rgba(255,111,174,.35), rgba(20,3,13,.9) 70%);
+  border:1px solid rgba(255,158,203,.4);
+  box-shadow:0 0 30px -4px rgba(255,63,142,.6), inset 0 0 18px rgba(255,111,174,.16);
+  animation:beat 2.6s ease-in-out infinite;
+}
+@media (max-width:900px){
+  .wait-pair{grid-template-columns:1fr;gap:clamp(10px,2.4vw,16px)}
+  .wp-bridge{height:clamp(44px,8vw,60px)}
+  .wp-bridge::before{
+    top:50%;bottom:auto;left:5%;right:5%;width:auto;height:1px;transform:translateY(-50%);
+    background-image:linear-gradient(90deg, rgba(255,158,203,.55) 50%, transparent 0);
+    background-size:11px 1px;background-repeat:repeat-x;
+  }
+}
+@media (max-width:480px){
+  .wp-head{gap:10px}
+  .wp-days{display:none}
+  .wp-cap{font-size:.72rem}
+  .meet-route{gap:8px;padding:11px 10px}
+  .mr-city b{font-size:.82rem}
+  .mr-city i{display:none}
+}
+
+.meet-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  max-width:880px;margin:clamp(24px,4vh,38px) auto 0;
+  padding:clamp(24px,4.4vw,40px) clamp(18px,4vw,36px);
+  border-radius:clamp(22px,3.4vw,32px);
+  text-align:center;
+  background:
+    radial-gradient(120% 130% at 50% -20%, rgba(255,111,174,.2), transparent 62%),
+    linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 40px 90px -60px #000, inset 0 1px 0 rgba(255,255,255,.14);
+}
+.meet-card::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(80% 70% at 50% 120%, rgba(196,132,255,.12), transparent 70%);
+}
+.meet-eyebrow{
+  margin:0;font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,194,222,.62);
+}
+.meet-line{
+  margin:12px 0 0;
+  font-family:var(--font-display);font-style:italic;font-weight:600;
+  font-size:clamp(1.15rem,3.2vw,2rem);line-height:1.3;color:#ffe8f3;
+}
+.meet-line b{
+  display:inline-block;font-style:normal;font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:1.35em;line-height:1;padding:0 .08em;
+  background:linear-gradient(180deg,#fff,#ffd0e6 45%,#ff5fa2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 20px rgba(255,63,142,.4));
+}
+.meet-route{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(10px,2vw,18px);max-width:520px;
+  margin:20px auto 0;padding:14px clamp(12px,2.4vw,20px);
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);
+}
+.mr-city{display:grid;gap:2px;min-width:0;text-align:left}
+.mr-city.right{text-align:right}
+.mr-city b{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(.9rem,1.8vw,1.05rem);line-height:1.15;white-space:nowrap;
+}
+.mr-city i{
+  font-style:normal;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,214,234,.45);white-space:nowrap;
+}
+.mr-track{position:relative;flex:1;min-width:46px;height:20px;display:flex;align-items:center}
+.mr-track::before{
+  content:'';position:absolute;left:0;right:0;top:50%;height:1px;
+  background-image:linear-gradient(90deg, rgba(255,158,203,.6) 50%, transparent 0);
+  background-size:8px 1px;background-repeat:repeat-x;
+}
+.mr-plane{
+  position:relative;width:19px;height:19px;margin-inline:auto;color:#ffd7ea;
+  filter:drop-shadow(0 0 8px rgba(255,63,142,.7));
+  animation:planeBob 3.2s ease-in-out infinite;
+}
+@keyframes planeBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.meet-count{display:flex;justify-content:center;gap:clamp(7px,1.4vw,12px);margin-top:20px}
+.meet-tile{
+  min-width:clamp(62px,9vw,84px);
+  padding:12px 9px 10px;border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 20px 36px -28px #000, inset 0 1px 0 rgba(255,255,255,.14);
+}
+.meet-tile b{
+  display:block;font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;
+  font-size:clamp(1.25rem,2.8vw,1.8rem);line-height:1;
+}
+.meet-tile span{
+  display:block;margin-top:6px;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,235,245,.55);
+}
+.meet-place{
+  margin:16px 0 0;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,214,234,.55);
+}
+.meet-place svg{
+  width:13px;height:13px;vertical-align:-2px;margin-right:5px;
+  fill:none;stroke:currentColor;stroke-width:1.6;
+}
+
+/* Vé máy bay */
+.extra-grid{
+  display:grid;gap:clamp(16px,2.4vw,26px);
+  grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
+  margin-top:clamp(24px,4vh,38px);
+}
+@media (max-width:900px){ .extra-grid{grid-template-columns:1fr} }
+
+.board{
+  position:relative;display:grid;isolation:isolate;min-height:100%;
+  grid-template-columns:minmax(0,1fr) clamp(82px,10vw,112px);
+  border-radius:24px;overflow:hidden;
+  background:
+    radial-gradient(120% 150% at 0% 0%, rgba(255,111,174,.2), transparent 55%),
+    linear-gradient(150deg,#2b0a1e,#15030d 76%);
+  border:1px solid rgba(255,158,203,.23);
+  box-shadow:0 34px 70px -50px #000, inset 0 1px 0 rgba(255,255,255,.12);
+}
+.board::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(90% 120% at 100% 100%, rgba(196,132,255,.13), transparent 60%);
+}
+.board-main{padding:clamp(18px,2.6vw,26px)}
+.board-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.board-airline{
+  display:flex;align-items:center;gap:8px;
+  font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:#ffc2de;
+}
+.board-airline svg{width:15px;height:15px;flex:none;fill:#ff5fa2;filter:drop-shadow(0 0 8px rgba(255,63,142,.7))}
+.board-label{font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,214,234,.4)}
+.board-route{display:flex;align-items:center;gap:clamp(10px,2vw,18px);margin-top:22px}
+.board-city{display:grid;gap:3px;min-width:0}
+.board-city.right{text-align:right}
+.board-city .code{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.9rem,4.4vw,3rem);line-height:.9;letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff,#ffd0e6 50%,#ff5fa2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.board-city .name{
+  font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,214,234,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.board-plane{flex:1;display:flex;align-items:center;gap:5px;color:#ff8fc7;min-width:28px}
+.board-plane i{
+  flex:1;height:1px;
+  background-image:linear-gradient(90deg, rgba(255,158,203,.55) 50%, transparent 0);
+  background-size:8px 1px;background-repeat:repeat-x;
+}
+.board-plane svg{width:18px;height:18px;flex:none;fill:currentColor;filter:drop-shadow(0 0 8px rgba(255,63,142,.6))}
+.board-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 12px;margin-top:22px}
+.board-field span{
+  display:block;font-size:.49rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,214,234,.4);
+}
+.board-field b{
+  display:block;margin-top:3px;font-size:clamp(.74rem,1.15vw,.85rem);font-weight:600;line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.board-note{
+  margin:16px 0 0;font-family:var(--font-display);font-style:italic;
+  font-size:.8rem;line-height:1.5;color:rgba(255,194,222,.65);
+}
+.board-stub{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  gap:12px;padding:18px 10px;text-align:center;
+  border-left:1px dashed rgba(255,158,203,.32);
+  background:rgba(255,255,255,.022);
+}
+.board-stub::before,.board-stub::after{
+  content:'';position:absolute;left:0;width:14px;height:14px;border-radius:50%;
+  background:var(--bg-0);border:1px solid rgba(255,158,203,.25);transform:translateX(-50%);
+}
+.board-stub::before{top:-7px}
+.board-stub::after{bottom:-7px}
+.board-stub-label{
+  max-height:74px;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,214,234,.45);writing-mode:vertical-rl;text-orientation:mixed;
+}
+.board-stub-seat{
+  font-family:var(--font-display);font-size:.68rem;letter-spacing:.08em;
+  color:#ffd7ea;writing-mode:vertical-rl;text-orientation:mixed;
+}
+.board-barcode{
+  width:100%;height:38px;opacity:.62;border-radius:2px;
+  background:repeating-linear-gradient(90deg,#ffd7ea 0 2px,transparent 2px 4px,#ffd7ea 4px 5px,transparent 5px 9px);
+}
+@media (max-width:520px){
+  .board{grid-template-columns:minmax(0,1fr) 74px}
+  .board-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .board-stub-label,.board-stub-seat{display:none}
+  .board-barcode{height:52px}
+}
+
+/* Ảnh máy bay thật */
+.plane-photo{
+  position:relative;display:block;width:100%;isolation:isolate;
+  margin-top:clamp(16px,2.6vw,26px);padding:0;
+  border:1px solid rgba(255,158,203,.22);border-radius:24px;overflow:hidden;
+  background:linear-gradient(160deg,#2b0a1e,#15030d);
+  box-shadow:0 34px 70px -50px #000, inset 0 1px 0 rgba(255,255,255,.12);
+  cursor:pointer;text-align:left;color:#fff;
+}
+.plane-photo .pp-media{position:relative;display:block;aspect-ratio:21/9;overflow:hidden}
+@media (max-width:700px){ .plane-photo .pp-media{aspect-ratio:16/9} }
+.plane-photo img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .7s ease, transform .9s var(--ease);
+}
+.plane-photo img.in{opacity:1}
+.plane-photo:hover img{transform:scale(1.035)}
+.plane-photo .pp-shade{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg, rgba(10,1,7,.08) 30%, rgba(10,1,7,.15) 50%, rgba(10,1,7,.9) 100%);
+}
+.plane-photo .pp-meta{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;pointer-events:none;
+  display:grid;gap:4px;padding:clamp(16px,2.6vw,28px);
+}
+.pp-eyebrow{
+  font-size:.55rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(255,194,222,.7);
+}
+.pp-title{
+  font-family:var(--font-display);font-style:italic;font-weight:600;
+  font-size:clamp(1.05rem,2.4vw,1.7rem);line-height:1.2;color:#ffe8f3;
+  text-shadow:0 2px 20px rgba(0,0,0,.65);
+}
+.pp-note{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,214,234,.55)}
+.pp-skel{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(100deg,#2a0a1c 20%,#43122e 40%,#2a0a1c 60%);
+  background-size:220% 100%;animation:skel 1.4s linear infinite;
+}
+.plane-photo.is-empty .pp-media{
+  background:
+    repeating-linear-gradient(45deg, rgba(255,111,174,.05) 0 16px, rgba(255,111,174,.1) 16px 32px),
+    linear-gradient(160deg,#320b20,#18030d);
+  outline:1px dashed rgba(255,158,203,.3);outline-offset:-10px;
+}
+.pp-empty{
+  position:absolute;inset:0;z-index:2;display:grid;place-items:center;gap:8px;
+  padding:20px;text-align:center;color:#ffc2de;
+}
+.pp-empty svg{
+  width:44px;height:44px;fill:none;stroke:#ff9ecb;stroke-width:1.1;
+  opacity:.8;filter:drop-shadow(0 0 14px rgba(255,63,142,.55));
+}
+.pp-empty b{
+  font-family:var(--font-display);font-style:italic;font-weight:600;
+  font-size:clamp(1rem,2vw,1.25rem);color:#ffe8f3;
+}
+.pp-empty code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.62rem;padding:3px 10px;border-radius:999px;
+  background:rgba(255,111,174,.13);color:#ffb3d6;word-break:break-all;
+}
+.pp-empty span{font-size:.66rem;letter-spacing:.08em;color:rgba(255,214,234,.5)}
+
+/* Hộp thư chờ ngày gặp */
+.capsule-card{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100%;padding:clamp(20px,3vw,28px);text-align:center;
+  border-radius:24px;overflow:hidden;isolation:isolate;
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(255,111,174,.18), transparent 60%),
+    linear-gradient(160deg, rgba(255,255,255,.065), rgba(255,255,255,.015));
+  border:1px solid rgba(255,158,203,.2);
+  box-shadow:0 34px 70px -50px #000, inset 0 1px 0 rgba(255,255,255,.12);
+}
+.capsule-card::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(80% 70% at 50% 120%, rgba(196,132,255,.16), transparent 70%);
+}
+.capsule-icon{
+  position:relative;width:clamp(54px,7vw,68px);aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;color:#ffc2de;
+  background:radial-gradient(circle at 50% 35%, rgba(255,111,174,.32), rgba(20,3,13,.9) 72%);
+  border:1px solid rgba(255,158,203,.4);
+  box-shadow:0 0 34px -6px rgba(255,63,142,.55), inset 0 0 18px rgba(255,111,174,.15);
+}
+.capsule-icon > svg{width:26px;height:26px}
+.capsule-seal{
+  position:absolute;right:-3px;bottom:-3px;width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;font-size:.62rem;color:#2a0313;
+  background:linear-gradient(145deg,#ffd0e6,#ff5fa2);box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+.capsule-eyebrow{
+  margin:16px 0 0;font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(255,194,222,.55);
+}
+.capsule-title{
+  margin:8px 0 0;font-family:var(--font-display);font-weight:600;
+  font-size:clamp(1.05rem,2vw,1.32rem);line-height:1.25;color:#ffe8f3;
+}
+.capsule-note{margin:7px 0 0;font-size:.72rem;letter-spacing:.1em;color:rgba(255,214,234,.55)}
+.capsule-state{
+  margin:14px 0 0;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,214,234,.45);
+}
+.capsule-card.unlocked .capsule-state{color:#ffb3d6}
+.capsule-btn{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  margin-top:14px;padding:11px 20px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(255,111,174,.4);
+  background:rgba(255,111,174,.13);color:#ffe7f3;
+  font-size:.78rem;letter-spacing:.02em;
+  transition:background .3s, border-color .3s, transform .3s, box-shadow .3s;
+}
+.capsule-btn svg{width:14px;height:14px;fill:currentColor}
+.capsule-btn:hover{
+  background:rgba(255,111,174,.24);border-color:rgba(255,158,203,.65);
+  transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(255,63,142,.8);
+}
+.capsule-card.unlocked .capsule-btn{
+  background:linear-gradient(120deg,#ff3f8e,#ff8fc7);border-color:transparent;
+  color:#2a0313;font-weight:600;
+}
+
+/* Checklist khi gặp nhau */
+.checklist-card{
+  position:relative;margin-top:clamp(16px,2.6vw,26px);
+  padding:clamp(20px,3.2vw,32px);border-radius:26px;overflow:hidden;
+  background:linear-gradient(165deg, rgba(255,255,255,.065), rgba(255,255,255,.015));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 36px 80px -58px #000, inset 0 1px 0 rgba(255,255,255,.12);
+}
+.checklist-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.checklist-head h3{
+  margin:0;font-family:var(--font-display);font-weight:600;
+  font-size:clamp(1.15rem,2.4vw,1.55rem);line-height:1.2;
+  background:linear-gradient(180deg,#fff,#ffd4e8);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.checklist-head p{margin:7px 0 0;font-size:.83rem;color:var(--muted)}
+.checklist-progress{display:flex;align-items:center;gap:10px;flex:none}
+.checklist-progress b{
+  font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;
+  font-size:1.05rem;color:#ffd0e6;
+}
+.checklist-bar{
+  display:block;width:clamp(80px,13vw,140px);height:5px;border-radius:999px;
+  background:rgba(255,255,255,.1);overflow:hidden;
+}
+.checklist-bar i{
+  display:block;height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,#ff3f8e,#ffd0e6);
+  box-shadow:0 0 12px rgba(255,63,142,.6);
+  transition:width .45s var(--ease);
+}
+.checklist-items{
+  list-style:none;margin:20px 0 0;padding:0;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;
+}
+@media (max-width:700px){ .checklist-items{grid-template-columns:1fr} }
+.checklist-item label{
+  position:relative;display:flex;align-items:flex-start;gap:11px;
+  padding:10px 11px;border-radius:13px;cursor:pointer;
+  border:1px solid transparent;
+  transition:background .3s, border-color .3s;
+}
+.checklist-item label:hover{background:rgba(255,111,174,.07);border-color:rgba(255,111,174,.18)}
+.checklist-item input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.check-box{
+  flex:none;width:21px;height:21px;border-radius:7px;margin-top:1px;
+  display:grid;place-items:center;
+  border:1px solid rgba(255,158,203,.45);background:rgba(255,255,255,.03);
+  transition:background .3s, border-color .3s, box-shadow .3s, transform .3s;
+}
+.check-box svg{
+  width:12px;height:12px;fill:none;stroke:#2a0313;stroke-width:2.6;
+  stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.6);
+  transition:opacity .25s, transform .3s var(--ease);
+}
+.checklist-item input:checked + .check-box{
+  background:linear-gradient(145deg,#ffd0e6,#ff3f8e);border-color:transparent;
+  box-shadow:0 0 18px -4px rgba(255,63,142,.75);
+}
+.checklist-item input:checked + .check-box svg{opacity:1;transform:none}
+.checklist-item input:focus-visible + .check-box{outline:2px solid var(--pink-300);outline-offset:3px}
+.checklist-text{
+  font-size:.85rem;line-height:1.45;color:rgba(255,238,246,.82);
+  transition:color .3s;
+}
+.checklist-item input:checked ~ .checklist-text{
+  color:rgba(255,238,246,.4);text-decoration:line-through;
+  text-decoration-color:rgba(255,111,174,.6);
+}
+.checklist-reset{
+  margin-top:14px;padding:6px 12px;border-radius:999px;cursor:pointer;
+  background:none;border:0;color:rgba(255,214,234,.38);
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  transition:color .3s;
+}
+.checklist-reset:hover{color:#ffb3d6}
+
+/* Lá thư trong hộp thư */
+.capsule-overlay{
+  position:fixed;inset:0;z-index:125;display:grid;place-items:center;
+  padding:clamp(16px,4vw,48px);
+  background:rgba(6,1,5,.86);
+  backdrop-filter:blur(18px) saturate(1.1);-webkit-backdrop-filter:blur(18px) saturate(1.1);
+  opacity:0;visibility:hidden;transition:opacity .5s ease, visibility .5s ease;
+}
+.capsule-overlay.open{opacity:1;visibility:visible}
+.capsule-letter{
+  position:relative;width:min(680px,100%);max-height:86vh;overflow:auto;
+  padding:clamp(26px,5vw,54px);border-radius:10px;
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.8), transparent 50%),
+    linear-gradient(160deg,#fff8f2,#ffe9df 58%,#ffd9e8);
+  color:#4a102c;
+  box-shadow:0 50px 110px -40px #000, 0 0 0 1px rgba(255,255,255,.5) inset;
+  transform:scale(.94) translateY(14px);opacity:0;
+  transition:transform .6s var(--ease), opacity .5s ease;
+}
+.capsule-overlay.open .capsule-letter{transform:none;opacity:1}
+.capsule-letter::before{
+  content:'';position:absolute;inset:12px;border:1px solid rgba(180,70,110,.18);
+  border-radius:6px;pointer-events:none;
+}
+.capsule-letter-eyebrow{
+  margin:0 0 18px;font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(120,30,65,.55);
+}
+.capsule-letter h3{
+  margin:0 0 18px;font-family:var(--font-display);font-style:italic;font-weight:600;
+  font-size:clamp(1.5rem,3.5vw,2.1rem);line-height:1.2;color:#7a1b45;
+}
+.capsule-letter p{
+  margin:0 0 1.15em;font-size:clamp(.93rem,1.6vw,1.03rem);line-height:1.9;color:#551330;
+}
+.capsule-letter p:last-of-type{margin-bottom:0}
+.capsule-letter #capsuleLetterBody p:first-of-type::first-letter{
+  float:left;padding:4px 12px 0 0;
+  font-family:var(--font-display);font-style:italic;font-size:2.6em;line-height:.82;color:#d6488a;
+}
+.capsule-sign{
+  margin:22px 0 0 !important;text-align:right;
+  font-family:var(--font-display);font-style:italic;font-size:1.15rem;color:#8a2352 !important;
+}
+.capsule-close{
+  position:fixed;top:max(14px,env(safe-area-inset-top));right:14px;z-index:2;
+  width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+  font-size:1.6rem;line-height:1;color:#fff;cursor:pointer;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:background .3s, transform .3s;
+}
+.capsule-close:hover{background:rgba(255,111,174,.25);transform:rotate(90deg)}
+
 /* ---------- Khoảng cách ---------- */
 .dist-places{
   display:grid;gap:clamp(16px,2.6vw,26px);
@@ -869,8 +1463,9 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
 /* ---------- Responsive ---------- */
 @media (max-width:560px){
+  .topbar{gap:10px;padding-inline:12px}
   .nav{
-    max-width:calc(100vw - 86px);overflow-x:auto;scrollbar-width:none;
+    max-width:calc(100vw - 100px);overflow-x:auto;scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
   }
   .nav::-webkit-scrollbar{display:none}
@@ -938,6 +1533,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     <a href="#gallery">Ảnh</a>
     <a href="#videos">Video</a>
     <a href="#distance">Khoảng cách</a>
+    <a href="#waiting">Ngày chờ</a>
     <a href="#love">Lời nhắn</a>
   </nav>
 </header>
@@ -1047,6 +1643,60 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     </div>
   </section>
 
+  <!-- ============ TỪNG NGÀY CHỜ ĐƯỢC GẶP EM ============ -->
+  <section class="section wait" id="waiting">
+    <div class="shell">
+      <div class="shead reveal">
+        <p class="eyebrow">Ngày chờ</p>
+        <h2 class="shead-title">Từng ngày chờ được gặp em</h2>
+        <p class="shead-sub">Mỗi khung hình là một ngày anh chờ. Mỗi ngày chờ, lại gần em thêm một chút.</p>
+      </div>
+
+      <div class="wait-pair">
+        <article class="wp-card a reveal" id="waitA"></article>
+
+        <div class="wp-bridge reveal" style="--d:.1s" aria-hidden="true">
+          <span class="wp-heart">♡</span>
+        </div>
+
+        <article class="wp-card b reveal" style="--d:.16s" id="waitB"></article>
+      </div>
+
+      <p class="wait-total reveal" id="waitTotal">10 khung hình · và rất nhiều ngày anh chờ em.</p>
+
+      <div class="meet-card reveal">
+        <p class="meet-eyebrow">Ngày được gặp lại</p>
+        <p class="meet-line" id="meetLine">Chưa hẹn được ngày gặp lại — nhưng ngày nào anh cũng chờ em.</p>
+
+        <div class="meet-route" aria-label="Anh đi từ TP. Hồ Chí Minh ra Hà Nội để gặp em">
+          <span class="mr-city"><b>Sài Gòn</b><i>TP. Hồ Chí Minh</i></span>
+          <span class="mr-track" aria-hidden="true">
+            <svg class="mr-plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M2.1 3.4 22 12 2.1 20.6l3.1-7.1L15 12 5.2 10.5z"/>
+            </svg>
+          </span>
+          <span class="mr-city right"><b>Hà Nội</b><i>nơi có em</i></span>
+        </div>
+
+        <div class="meet-count" id="meetCount" hidden>
+          <div class="meet-tile"><b id="meetH">00</b><span>giờ</span></div>
+          <div class="meet-tile"><b id="meetM">00</b><span>phút</span></div>
+          <div class="meet-tile"><b id="meetS">00</b><span>giây</span></div>
+        </div>
+        <p class="meet-place" id="meetPlace" hidden></p>
+      </div>
+
+      <div class="extra-grid">
+        <article class="board reveal" id="boardPass"></article>
+        <article class="capsule-card reveal" style="--d:.1s" id="capsuleCard"></article>
+      </div>
+
+      <button class="plane-photo reveal" type="button" id="planePhoto" aria-label="Xem ảnh máy bay thật"></button>
+
+      <article class="checklist-card reveal" id="checklistCard"></article>
+    </div>
+  </section>
+
   <!-- ============ LỜI NHẮN ============ -->
   <section class="section" id="love">
     <div class="shell">
@@ -1127,6 +1777,17 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   </div>
 </div>
 
+<!-- ============ LÁ THƯ TRONG HỘP THƯ ============ -->
+<div class="capsule-overlay" id="capsuleModal" role="dialog" aria-modal="true" aria-label="Lá thư mở vào đêm mình gặp nhau" aria-hidden="true">
+  <button class="capsule-close" id="capsuleClose" aria-label="Đóng">×</button>
+  <article class="capsule-letter">
+    <p class="capsule-letter-eyebrow" id="capsuleLetterEyebrow">Lá thư mở lúc 23:30 · 20.11.2026</p>
+    <h3 id="capsuleLetterTitle">Gửi em,</h3>
+    <div id="capsuleLetterBody"></div>
+    <p class="capsule-sign" id="capsuleSign">— Nho Nam</p>
+  </article>
+</div>
+
 <noscript>
   <p style="position:fixed;inset:auto 0 0 0;padding:16px;text-align:center;background:#2b0a1e;color:#fff">
     Hãy bật JavaScript để xem được hiệu ứng và đồng hồ đếm ngày yêu nhé.
@@ -1172,6 +1833,90 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
       a: { name: 'Nho Nam', city: 'TP. Hồ Chí Minh', lat: 10.863776, lng: 106.804723 },
       b: { name: 'Như Ý', city: 'Hà Nội', lat: 21.0285, lng: 105.8542 },
       note: '…nhưng chỉ cần nhắm mắt là thấy nhau.'
+    },
+
+    // "Từng ngày chờ được gặp em" — mỗi bên 5 ảnh.
+    // Bỏ ảnh vào images/ với tên: cho-nam-1 ... cho-nam-5 và cho-y-1 ... cho-y-5
+    // (hoặc đổi src bên dưới theo tên file của bạn; hỗ trợ .jpg/.jpeg/.png/.webp)
+    waiting: {
+      // Ngày gặp lại: 23:30 ngày 20/11/2026 — anh từ TP.HCM ra Hà Nội gặp em.
+      nextMeet: '2026-11-20T23:30:00',
+      nextMeetPlace: 'Hà Nội · 23:30 · 20.11.2026',
+      a: {
+        role: 'Anh',
+        photos: [
+          { src: 'cho-nam-1', caption: 'Một ngày chờ em' },
+          { src: 'cho-nam-2', caption: 'Chụp vội để gửi em' },
+          { src: 'cho-nam-3', caption: 'Hôm nay anh nhớ em' },
+          { src: 'cho-nam-4', caption: 'Đang đếm ngày được gặp em' },
+          { src: 'cho-nam-5', caption: 'Sắp được gặp em rồi ♡' }
+        ]
+      },
+      b: {
+        role: 'Em',
+        photos: [
+          { src: 'cho-y-1', caption: 'Em cũng chờ anh' },
+          { src: 'cho-y-2', caption: 'Một ngày nhớ anh' },
+          { src: 'cho-y-3', caption: 'Gửi anh tấm hình' },
+          { src: 'cho-y-4', caption: 'Đang đếm ngày được gặp anh' },
+          { src: 'cho-y-5', caption: 'Sắp được gặp anh rồi ♡' }
+        ]
+      }
+    },
+
+    // Vé máy bay Sài Gòn → Hà Nội
+    boarding: {
+      airline: 'LOVE AIR',
+      fromCode: 'SGN', fromCity: 'TP. Hồ Chí Minh',
+      toCode: 'HAN', toCity: 'Hà Nội',
+      date: '20.11.2026', time: '23:30',
+      passenger: 'Nho Nam', flight: 'YÊU 2026',
+      seat: 'Cạnh bé Như Ý', gate: 'Trái tim',
+      note: 'Anh bay cả một chặng dài, chỉ để được gặp em.'
+    },
+
+    // Ảnh máy bay thật — bỏ ảnh vào images/ và đặt tên may-bay.jpg
+    boardingPhoto: {
+      src: 'may-bay',
+      eyebrow: 'Ảnh thật · chuyến bay 20.11.2026',
+      caption: 'Chiếc máy bay đưa anh ra gặp em',
+      note: 'SGN → HAN · 23:30'
+    },
+
+    // Hộp thư chỉ mở đúng đêm gặp nhau
+    capsule: {
+      openAt: '2026-11-20T23:30:00',   // đổi giờ/ngày mở thư tại đây
+      title: 'Lá thư mở vào đêm mình gặp nhau',
+      note: '23:30 · 20.11.2026',
+      letterTitle: 'Gửi bé Như Ý,',
+      body: [
+        'Nếu em đang đọc lá thư ni, nghĩa là mình đã gặp chắc rồi. Anh đã nghị đến khoảnh khắc ni không biết mấy trăm lần rồi haha.',
+        'Cảm ơn em vì đã chờ anh. Cảm ơn em vì đã tin vào một người ở cách em cả nghìn cây số, ',
+        'Anh không biết sau ni sẽ có bao nhiêu ngày mình phải xa nhau nữa, nhưng anh biết sau tất cả những ngày chờ, anh vẫn sẽ tìm cách để được gần em.',
+        'Bựa ni, cuối cùng anh cũng được gặp em. Và anh sẽ nhớ đêm này rất lâu. Nỏ muốn phải xa em, nỏ muốn về SG nựa huhu, ngày anh được gặp em cụng là ngày sợ 4 ngày nựa anh phải xa em! - Yêu Như Ý nhiều lắmmmmmm !!!'
+      ],
+      sign: '— Nho Nam - anh có tự viết nội dung á hehe'
+    },
+
+    // Checklist những việc muốn làm cùng nhau khi gặp
+    checklist: {
+      title: 'Khi được gặp em, mình sẽ...',
+      note: 'Mười điều nhỏ thôi, nhưng anh muốn làm cùng em.',
+      items: [
+        'Ôm em thật lâu ở sân bay',
+        'Đưa em đi ăn món em thích',
+        'Cùng đi dạo Hồ Tây',
+        'Chụp thật nhiều ảnh chung',
+        'Ngồi cà phê và nghe em kể chuyện',
+        'Nắm tay em đi khắp Hà Nội',
+        'Cùng ngắm hoàng hôn',
+        'Xem một bộ phim cùng nhau',
+        'Mua cho em món ăn vặt em thích',
+        'Nằm ôm em cả ngày',
+        'Chở em đi làm vào sáng sớm',
+                'Đón em về nhà vào chiều tối',
+        'Hẹn ngày để em vô SG'
+      ]
     }
   };
 
@@ -1193,6 +1938,8 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   const HEART_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
   const PLAY_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.3-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14z"/></svg>';
   const FILM_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.4"/><path d="M7.5 4.5v15M16.5 4.5v15M2.5 12h19M2.5 8.2h5M2.5 15.8h5M16.5 8.2h5M16.5 15.8h5"/></svg>';
+  const PLANE_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.1 3.4 22 12 2.1 20.6l3.1-7.1L15 12 5.2 10.5z"/></svg>';
+  const ENVELOPE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>';
 
   /* Toast */
   const toastEl = $('#toast');
@@ -1870,6 +2617,436 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   }
 
   /* ============================================================
+     TỪNG NGÀY CHỜ ĐƯỢC GẶP EM
+     ============================================================ */
+
+  const WAIT = CONFIG.waiting;
+  const waitHosts = { a: $('#waitA'), b: $('#waitB') };
+
+  if (WAIT && waitHosts.a && waitHosts.b) {
+    /* Ảnh chỉ tải khi cuộn gần tới mục này */
+    const waitLoader = ('IntersectionObserver' in window)
+      ? new IntersectionObserver((entries, obs) => {
+          entries.forEach(en => {
+            if (!en.isIntersecting) return;
+            obs.unobserve(en.target);
+            if (en.target.__loadWait) en.target.__loadWait();
+          });
+        }, { rootMargin: '240px 0px', threshold: 0 })
+      : null;
+
+    ['a', 'b'].forEach(key => {
+      const host = waitHosts[key];
+      const data = WAIT[key] || {};
+      const place = PLACES ? PLACES[key] : null;
+      const name = (place && place.name) || (key === 'a' ? 'Nho Nam' : 'Như Ý');
+      const city = (place && place.city) || '';
+      const role = data.role || (key === 'a' ? 'Anh' : 'Em');
+      const photos = Array.isArray(data.photos) ? data.photos : [];
+      const lastWord = name.trim().split(/\s+/).pop() || '';
+      const initial = (lastWord.charAt(0) || '♡').toUpperCase();
+      const slots = new Array(photos.length).fill(null);
+
+      host.innerHTML =
+        '<header class="wp-head">' +
+          '<span class="wp-ava" aria-hidden="true">' + escapeHtml(initial) + '</span>' +
+          '<div class="wp-id"><b>' + escapeHtml(name) + '</b><span>' +
+            escapeHtml(role) + (city ? ' · ' + escapeHtml(city) : '') +
+          '</span></div>' +
+          '<span class="wp-days">' + ' những ngày chờ đợi để gặp nhau</span>' +
+        '</header>' +
+        '<div class="wp-grid"></div>';
+
+      const grid = host.querySelector('.wp-grid');
+
+      photos.forEach((item, i) => {
+        const shot = document.createElement('button');
+        shot.type = 'button';
+        shot.className = 'wp-shot loading';
+        shot.innerHTML =
+          '<span class="wp-skel" aria-hidden="true"></span>' +
+          '<span class="wp-cap">' + escapeHtml(item.caption || '') + '</span>';
+        shot.setAttribute('aria-label', 'Xem ảnh' +
+          (item.caption ? ': ' + item.caption : ''));
+        grid.appendChild(shot);
+
+        let loaded = false;
+        function loadShot() {
+          if (loaded) return;
+          loaded = true;
+
+          resolvePhoto(item.src).then(url => {
+            shot.classList.remove('loading');
+            const skel = shot.querySelector('.wp-skel');
+            if (skel) skel.remove();
+
+            if (!url) {
+              shot.classList.add('is-empty');
+              const expected = hasExtension(item.src)
+                ? urlPath(item.src, 'images')
+                : urlPath(item.src, 'images') + '.jpg';
+              shot.innerHTML =
+                '<span class="wp-ph">' + HEART_SVG +
+                  '<b>Thêm ảnh của ' + escapeHtml(role.toLowerCase()) + '</b>' +
+                  '<code>' + escapeHtml(expected) + '</code></span>';
+              shot.addEventListener('click', () => {
+                toast('Chưa có ảnh này. Thêm file <b>' + escapeHtml(expected) +
+                  '</b> vào thư mục images nhé.');
+              });
+              return;
+            }
+
+            const img = new Image();
+            img.alt = item.caption || ('Ảnh chờ ngày gặp của ' + name);
+            img.decoding = 'async';
+            img.addEventListener('load', () => img.classList.add('in'), { once: true });
+            img.src = url;
+            shot.insertBefore(img, shot.firstChild);
+
+            const entry = { url: url, caption: item.caption || '' };
+            slots[i] = entry;
+            shot.addEventListener('click', () => {
+              openPhoto(entry, slots.filter(Boolean));
+            });
+          });
+        }
+
+        if (waitLoader) {
+          shot.__loadWait = loadShot;
+          waitLoader.observe(shot);
+        } else {
+          loadShot();
+        }
+      });
+    });
+
+    /* Tổng số khung hình / ngày chờ của cả hai bên */
+    const waitTotal = $('#waitTotal');
+    if (waitTotal) {
+      const total = [WAIT.a, WAIT.b].reduce((sum, person) => {
+        return sum + (person && Array.isArray(person.photos) ? person.photos.length : 0);
+      }, 0);
+      if (total) {
+        waitTotal.textContent = total + ' khung hình · và rất nhiều ngày anh chờ em.';
+      }
+    }
+
+    /* Đồng hồ đếm ngược tới ngày gặp lại */
+    const meetLine = $('#meetLine');
+    const meetCount = $('#meetCount');
+    const meetPlace = $('#meetPlace');
+    const meetH = $('#meetH');
+    const meetM = $('#meetM');
+    const meetS = $('#meetS');
+    const meetDate = WAIT.nextMeet ? new Date(WAIT.nextMeet) : null;
+    const meetValid = !!(meetDate && !isNaN(meetDate.getTime()));
+
+    if (meetValid && meetLine && meetCount) {
+      meetCount.hidden = false;
+
+      if (meetPlace && WAIT.nextMeetPlace) {
+        meetPlace.innerHTML = PIN_SVG + escapeHtml(WAIT.nextMeetPlace);
+        meetPlace.hidden = false;
+      }
+
+      function updateMeetCountdown() {
+        const diff = meetDate.getTime() - Date.now();
+
+        if (diff <= 0) {
+          meetLine.innerHTML = 'Ngày mình được gặp lại đã đến rồi ♡';
+          meetCount.hidden = true;
+          return;
+        }
+
+        const total = Math.floor(diff / 1000);
+        const days = Math.floor(total / 86400);
+        const hours = Math.floor((total % 86400) / 3600);
+        const mins = Math.floor((total % 3600) / 60);
+        const secs = total % 60;
+
+        if (days > 0) {
+          meetLine.innerHTML = 'Còn <b>' + days.toLocaleString('vi-VN') + '</b> ngày nữa là anh được gặp em';
+        } else if (hours > 0) {
+          meetLine.innerHTML = 'Chỉ còn <b>' + hours + '</b> giờ nữa là anh được gặp em';
+        } else {
+          meetLine.innerHTML = 'Chỉ còn <b>' + Math.max(1, mins) + '</b> phút nữa là anh được gặp em';
+        }
+
+        meetH.textContent = pad2(hours);
+        meetM.textContent = pad2(mins);
+        meetS.textContent = pad2(secs);
+      }
+
+      updateMeetCountdown();
+      setInterval(updateMeetCountdown, 1000);
+    }
+
+    /* Vé máy bay Sài Gòn → Hà Nội */
+    const BP = CONFIG.boarding;
+    const boardHost = $('#boardPass');
+    if (BP && boardHost) {
+      const field = (label, value) =>
+        '<span class="board-field"><span>' + escapeHtml(label) + '</span><b>' +
+          escapeHtml(value || '—') + '</b></span>';
+
+      boardHost.innerHTML =
+        '<div class="board-main">' +
+          '<div class="board-top">' +
+            '<span class="board-airline">' + HEART_SVG + escapeHtml(BP.airline || 'LOVE AIR') + '</span>' +
+            '<span class="board-label">Boarding pass</span>' +
+          '</div>' +
+          '<div class="board-route">' +
+            '<span class="board-city"><span class="code">' + escapeHtml(BP.fromCode || 'SGN') + '</span>' +
+              '<span class="name">' + escapeHtml(BP.fromCity || 'TP. Hồ Chí Minh') + '</span></span>' +
+            '<span class="board-plane" aria-hidden="true"><i></i>' + PLANE_SVG + '<i></i></span>' +
+            '<span class="board-city right"><span class="code">' + escapeHtml(BP.toCode || 'HAN') + '</span>' +
+              '<span class="name">' + escapeHtml(BP.toCity || 'Hà Nội') + '</span></span>' +
+          '</div>' +
+          '<div class="board-fields">' +
+            field('Hành khách', BP.passenger) +
+            field('Ngày', BP.date) +
+            field('Giờ', BP.time) +
+            field('Chuyến', BP.flight) +
+            field('Ghế', BP.seat) +
+            field('Cổng', BP.gate) +
+          '</div>' +
+          '<p class="board-note">' + escapeHtml(BP.note || '') + '</p>' +
+        '</div>' +
+        '<div class="board-stub" aria-hidden="true">' +
+          '<span class="board-stub-label">' + escapeHtml(BP.flight || '') + '</span>' +
+          '<span class="board-barcode"></span>' +
+          '<span class="board-stub-seat">' + escapeHtml(BP.seat || '') + '</span>' +
+        '</div>';
+    }
+
+    /* Ảnh máy bay thật (anh tự thêm images/may-bay.jpg) */
+    const BPP = CONFIG.boardingPhoto;
+    const planeHost = $('#planePhoto');
+    if (BPP && planeHost) {
+      planeHost.innerHTML = '<span class="pp-media"><span class="pp-skel" aria-hidden="true"></span></span>';
+
+      let planeLoaded = false;
+      function loadPlane() {
+        if (planeLoaded) return;
+        planeLoaded = true;
+
+        resolvePhoto(BPP.src).then(url => {
+          if (!url) {
+            planeHost.classList.add('is-empty');
+            planeHost.setAttribute('aria-label', 'Thêm ảnh máy bay thật');
+            const expected = hasExtension(BPP.src)
+              ? urlPath(BPP.src, 'images')
+              : urlPath(BPP.src, 'images') + '.jpg';
+            planeHost.innerHTML =
+              '<span class="pp-media"><span class="pp-empty">' + PLANE_SVG +
+                '<b>Thêm ảnh máy bay thật</b>' +
+                '<code>' + escapeHtml(expected) + '</code>' +
+                '<span>Thả ảnh vào thư mục images, ảnh sẽ tự hiện ở đây.</span>' +
+              '</span></span>';
+            planeHost.addEventListener('click', () => {
+              toast('Chưa có ảnh máy bay. Thêm file <b>' + escapeHtml(expected) +
+                '</b> vào thư mục images nhé.');
+            });
+            return;
+          }
+
+          planeHost.setAttribute('aria-label', 'Xem ảnh máy bay thật: ' + (BPP.caption || ''));
+          planeHost.innerHTML =
+            '<span class="pp-media">' +
+              '<img class="pp-img" alt="' + escapeHtml(BPP.caption || 'Máy bay thật') + '">' +
+              '<span class="pp-shade" aria-hidden="true"></span>' +
+              '<span class="pp-meta">' +
+                '<span class="pp-eyebrow">' + escapeHtml(BPP.eyebrow || '') + '</span>' +
+                '<b class="pp-title">' + escapeHtml(BPP.caption || 'Máy bay thật') + '</b>' +
+                '<span class="pp-note">' + escapeHtml(BPP.note || '') + '</span>' +
+              '</span>' +
+            '</span>';
+
+          const img = planeHost.querySelector('.pp-img');
+          img.addEventListener('load', () => img.classList.add('in'), { once: true });
+          img.src = url;
+
+          const entry = { url: url, caption: BPP.caption || '' };
+          planeHost.addEventListener('click', () => {
+            openPhoto(entry, [entry]);
+          });
+        });
+      }
+
+      if (waitLoader) {
+        planeHost.__loadWait = loadPlane;
+        waitLoader.observe(planeHost);
+      } else {
+        loadPlane();
+      }
+    }
+
+    /* Hộp thư chỉ mở đúng đêm gặp */
+    const CAP = CONFIG.capsule;
+    const capsuleHost = $('#capsuleCard');
+    if (CAP && capsuleHost) {
+      const capOpenDate = CAP.openAt ? new Date(CAP.openAt) : null;
+      const capOpenValid = !!(capOpenDate && !isNaN(capOpenDate.getTime()));
+      const capModal = $('#capsuleModal');
+      const capBodyEl = $('#capsuleLetterBody');
+      const capTitleEl = $('#capsuleLetterTitle');
+      const capSignEl = $('#capsuleSign');
+      const capEyebrowEl = $('#capsuleLetterEyebrow');
+
+      if (capBodyEl && Array.isArray(CAP.body)) {
+        capBodyEl.innerHTML = CAP.body.map(p => '<p>' + escapeHtml(p) + '</p>').join('');
+      }
+      if (capEyebrowEl) capEyebrowEl.textContent = 'Lá thư mở lúc ' + (CAP.note || '23:30 · 20.11.2026');
+      if (capTitleEl) capTitleEl.textContent = CAP.letterTitle || 'Gửi em,';
+      if (capSignEl) capSignEl.textContent = CAP.sign || '— Nho Nam';
+
+      capsuleHost.innerHTML =
+        '<span class="capsule-icon" aria-hidden="true">' + ENVELOPE_SVG +
+          '<span class="capsule-seal">♡</span></span>' +
+        '<p class="capsule-eyebrow">Hộp thư chờ ngày gặp</p>' +
+        '<h3 class="capsule-title">' + escapeHtml(CAP.title || 'Lá thư mở vào đêm mình gặp nhau') + '</h3>' +
+        '<p class="capsule-note">' + escapeHtml(CAP.note || '') + '</p>' +
+        '<p class="capsule-state" id="capsuleState">Đang khoá</p>' +
+        '<button class="capsule-btn" id="capsuleBtn" type="button">' + HEART_SVG +
+          '<span>Mở lá thư</span></button>';
+
+      const capStateEl = capsuleHost.querySelector('#capsuleState');
+      const capBtn = capsuleHost.querySelector('#capsuleBtn');
+      const capBtnLabel = capBtn.querySelector('span');
+      let capTimer = 0;
+
+      function capIsOpen() {
+        return !capOpenValid || Date.now() >= capOpenDate.getTime();
+      }
+
+      function updateCapsuleState() {
+        if (capIsOpen()) {
+          capStateEl.textContent = 'Đã mở khoá · chạm để đọc';
+          capBtnLabel.textContent = 'Đọc lá thư';
+          capsuleHost.classList.add('unlocked');
+          if (capTimer) { clearInterval(capTimer); capTimer = 0; }
+          return;
+        }
+
+        const diff = capOpenDate.getTime() - Date.now();
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+
+        capStateEl.textContent = 'Đang khoá · còn ' +
+          (d > 0 ? d + ' ngày ' + pad2(h) + ' giờ'
+                 : h > 0 ? h + ' giờ ' + pad2(m) + ' phút'
+                 : Math.max(1, m) + ' phút');
+        capBtnLabel.textContent = 'Mở lá thư';
+        capsuleHost.classList.remove('unlocked');
+      }
+
+      function openCapsule() {
+        if (!capModal) return;
+        capModal.classList.add('open');
+        capModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('locked');
+        if (!reduceMotion) burst(VW / 2, VH / 2, 2.2);
+      }
+
+      function closeCapsule() {
+        if (!capModal || !capModal.classList.contains('open')) return;
+        capModal.classList.remove('open');
+        capModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('locked');
+      }
+
+      capBtn.addEventListener('click', () => {
+        if (!capIsOpen()) {
+          toast('Lá thư này sẽ mở vào <b>' + escapeHtml(CAP.note || '2:30 · 20.11.2026') +
+            '</b>. Chờ thêm chút nữa nhé ♡', 5200);
+          return;
+        }
+        openCapsule();
+      });
+
+      const capClose = $('#capsuleClose');
+      if (capClose) capClose.addEventListener('click', closeCapsule);
+      if (capModal) {
+        capModal.addEventListener('click', e => {
+          if (e.target === capModal) closeCapsule();
+        });
+      }
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeCapsule();
+      });
+
+      updateCapsuleState();
+      if (capOpenValid && Date.now() < capOpenDate.getTime()) {
+        capTimer = setInterval(updateCapsuleState, 1000);
+      }
+    }
+
+    /* Checklist khi gặp nhau */
+    const CHECK = CONFIG.checklist;
+    const checkHost = $('#checklistCard');
+    if (CHECK && checkHost) {
+      const items = Array.isArray(CHECK.items) ? CHECK.items : [];
+      const STORAGE_KEY = 'nhuy-meet-checklist-v1';
+
+      checkHost.innerHTML =
+        '<div class="checklist-head">' +
+          '<div><h3>' + escapeHtml(CHECK.title || 'Khi gặp nhau, mình sẽ...') + '</h3>' +
+            '<p>' + escapeHtml(CHECK.note || '') + '</p></div>' +
+          '<span class="checklist-progress"><b id="checkProgress">0/' + items.length + '</b>' +
+            '<span class="checklist-bar"><i id="checkBar"></i></span></span>' +
+        '</div>' +
+        '<ul class="checklist-items">' +
+          items.map((text, i) =>
+            '<li class="checklist-item"><label>' +
+              '<input type="checkbox" data-i="' + i + '">' +
+              '<span class="check-box" aria-hidden="true">' +
+                '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>' +
+              '<span class="checklist-text">' + escapeHtml(text) + '</span>' +
+            '</label></li>'
+          ).join('') +
+        '</ul>' +
+        '<button class="checklist-reset" id="checkReset" type="button">Đặt lại</button>';
+
+      const boxes = $$('.checklist-item input', checkHost);
+      let saved = [];
+      try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (err) { saved = []; }
+      if (!Array.isArray(saved)) saved = [];
+
+      function saveChecklist() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(boxes.map(b => b.checked)));
+        } catch (err) {}
+      }
+
+      function updateChecklist() {
+        const done = boxes.filter(b => b.checked).length;
+        const pct = items.length ? (done / items.length) * 100 : 0;
+        const progress = $('#checkProgress');
+        const bar = $('#checkBar');
+        if (progress) progress.textContent = done + '/' + items.length;
+        if (bar) bar.style.width = pct + '%';
+        saveChecklist();
+      }
+
+      boxes.forEach((box, i) => {
+        box.checked = !!saved[i];
+        box.addEventListener('change', updateChecklist);
+      });
+      updateChecklist();
+
+      const resetBtn = $('#checkReset');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          boxes.forEach(b => { b.checked = false; });
+          updateChecklist();
+          toast('Đã đặt lại danh sách. Mình sẽ bắt đầu lại từ đầu nhé ♡', 3000);
+        });
+      }
+    }
+  }
+
+  /* ============================================================
      LIGHTBOX
      ============================================================ */
 
@@ -1908,8 +3085,8 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     lb.classList.toggle('single', lbList.length <= 1);
   }
 
-  function openPhoto(entry) {
-    lbList = photoEntries.filter(Boolean);
+  function openPhoto(entry, list) {
+    lbList = (list && list.length) ? list : photoEntries.filter(Boolean);
     const idx = lbList.indexOf(entry);
     if (idx < 0) return;
     photoIndex = idx;
