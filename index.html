@@ -184,51 +184,156 @@ body.cur-hot #curRing{background:rgba(255,111,174,.1);border-color:rgba(255,158,
 .gate.asking .gate-heart{width:clamp(62px,12vw,86px)}
 
 /* ---------- 3 câu hỏi trước khi mở ---------- */
-.gate-quiz{
-  width:min(420px,100%);display:grid;gap:10px;
-  animation:passIn .5s var(--ease) both;
+.gate-inner{transition:opacity .5s ease,filter .5s ease,transform .6s var(--ease)}
+.gate.quizzing .gate-inner{
+  opacity:.12;filter:blur(5px);transform:scale(.92);pointer-events:none;
 }
-.gate-quiz.solved{
-  animation:none;opacity:0;transform:translateY(-10px);filter:blur(6px);
-  transition:opacity .35s ease,transform .35s var(--ease),filter .35s ease;
+.gate-quiz{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  transition:opacity .35s ease,filter .35s ease;
+}
+.gate-quiz[hidden]{display:none}
+.gate-quiz.solved{opacity:0;filter:blur(6px)}
+.gate-quiz.solved .gate-quiz-hud{opacity:0}
+.gate-quiz-hud{
+  position:absolute;top:max(20px,env(safe-area-inset-top));left:0;right:0;
+  display:grid;gap:9px;justify-items:center;padding:0 20px;pointer-events:none;
+  animation:passIn .5s var(--ease) both;transition:opacity .4s ease;
 }
 .gate-quiz-intro{
-  margin:0;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
-  color:rgba(255,214,234,.6);
+  margin:0;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;text-align:center;
+  color:rgba(255,214,234,.66);
 }
 @media (max-width:480px){
-  .gate-quiz-intro{font-size:.62rem;letter-spacing:.1em}
+  .gate-quiz-intro{font-size:.6rem;letter-spacing:.08em}
 }
-.gate-quiz-list{display:grid;gap:9px}
-.gq{
-  display:grid;gap:9px;padding:12px 14px;border-radius:18px;text-align:left;
-  background:rgba(255,255,255,.045);border:1px solid rgba(255,111,174,.2);
-  transition:border-color .35s,background .35s;
+.gq-hearts{display:flex;gap:10px}
+.gq-heart{
+  font-size:1.2rem;line-height:1;color:rgba(255,150,196,.24);
+  transition:color .3s,transform .3s var(--ease),text-shadow .4s;
 }
-.gq.done{border-color:rgba(255,111,174,.75);background:rgba(255,63,142,.1)}
-.gq.bad{animation:gateShake .42s ease;border-color:rgba(255,63,142,.85)}
-.gq-q{margin:0;font-size:.9rem;line-height:1.45;color:var(--ink)}
-.gq.done .gq-q{color:var(--pink-200)}
-.gq-acts{display:flex;gap:8px;flex-wrap:wrap}
-.gq.done .gq-acts{display:none}
+.gq-heart.on{
+  color:var(--pink-400);text-shadow:0 0 16px rgba(255,63,142,.95);
+  animation:gqHeartPop .6s var(--ease);
+}
+.gq-stage{position:absolute;inset:0;pointer-events:none}
+.gq-card{
+  position:absolute;left:0;top:0;
+  width:min(340px,calc(100vw - 36px));
+  padding:16px 17px 15px;border-radius:22px;text-align:left;
+  pointer-events:auto;
+  background:linear-gradient(160deg,rgba(74,17,46,.97),rgba(30,5,19,.98));
+  border:1px solid rgba(255,111,174,.38);
+  box-shadow:0 24px 64px -24px rgba(255,47,125,.9),0 0 0 1px rgba(255,255,255,.035) inset;
+  transform:rotate(var(--rot,0deg));
+  animation:gqIn .55s var(--ease) both;
+  will-change:transform,opacity;
+}
+.gq-in{display:grid;gap:11px;animation:gqFloat 4.6s ease-in-out infinite}
+.gq-card.bad .gq-in{animation:gqShake .45s ease}
+.gq-q{margin:0;font-size:.92rem;line-height:1.5;color:var(--ink)}
+.gq-acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .gq-btn{
   border-radius:999px;cursor:pointer;font:inherit;line-height:1;
-  transition:transform .2s var(--ease),color .25s,border-color .25s,box-shadow .25s;
+  transition:transform .25s var(--ease),color .25s,border-color .25s,box-shadow .25s,filter .25s;
 }
-.gq-btn:focus-visible{outline:2px solid var(--pink-300);outline-offset:2px}
+.gq-btn:focus-visible{outline:2px solid var(--pink-300);outline-offset:3px}
 .gq-yes{
-  padding:9px 16px;border:0;font-size:.78rem;font-weight:600;letter-spacing:.05em;
+  padding:10px 17px;border:0;font-size:.78rem;font-weight:600;letter-spacing:.05em;
   color:#2a0616;background:linear-gradient(135deg,#ffd9ec,#ff6fae 60%,#ff2f7d);
-  box-shadow:0 6px 18px -8px rgba(255,47,125,.9);
+  box-shadow:0 8px 22px -8px rgba(255,47,125,.95);
 }
-.gq-yes:hover{transform:translateY(-1px) scale(1.04)}
+.gq-yes:hover{transform:translateY(-1px) scale(1.05);filter:brightness(1.06)}
 .gq-no{
   padding:9px 14px;border:1px solid rgba(255,255,255,.14);font-size:.76rem;
-  color:rgba(255,214,234,.62);background:transparent;
+  color:rgba(255,214,234,.58);background:transparent;
 }
 .gq-no:hover{color:var(--pink-200);border-color:rgba(255,111,174,.5)}
 .gq-msg{margin:0;font-size:.75rem;line-height:1.45;color:var(--pink-300)}
 .gq-msg.ok{color:var(--pink-200)}
+.gq-pop{
+  position:absolute;left:0;top:0;transform:translate(-50%,-50%);
+  font-size:1.5rem;pointer-events:none;
+  filter:drop-shadow(0 0 14px rgba(255,63,142,.7));
+  animation:gqPop 1.15s var(--ease) forwards;
+}
+@keyframes gqIn{
+  0%{opacity:0;transform:rotate(var(--rot,0deg)) scale(.55) translateY(18px)}
+  58%{opacity:1;transform:rotate(var(--rot,0deg)) scale(1.07) translateY(-5px)}
+  100%{opacity:1;transform:rotate(var(--rot,0deg)) scale(1) translateY(0)}
+}
+@keyframes gqOut{
+  0%{opacity:1}
+  100%{opacity:0;transform:rotate(var(--rot,0deg)) scale(.55) translateY(-26px);filter:blur(5px)}
+}
+@keyframes gqFloat{
+  0%,100%{transform:rotate(0deg) translateY(0)}
+  50%{transform:rotate(1.3deg) translateY(-5px)}
+}
+@keyframes gqHeartPop{
+  0%{transform:scale(.4)}
+  55%{transform:scale(1.35)}
+  100%{transform:scale(1)}
+}
+@keyframes gqPop{
+  0%{opacity:0;transform:translate(-50%,-40%) scale(.5)}
+  28%{opacity:1;transform:translate(-50%,-95%) scale(1.18)}
+  100%{opacity:0;transform:translate(-50%,-210%) scale(.92)}
+}
+@media (prefers-reduced-motion:reduce){
+  .gq-card,.gq-in,.gq-pop,.gq-heart.on{animation:none!important}
+}
+
+/* ---------- Câu đố chốt cuối ---------- */
+.gate-final{
+  position:absolute;inset:0;z-index:4;display:grid;place-items:center;
+  padding:26px 20px;pointer-events:auto;
+  animation:passIn .5s var(--ease) both;
+}
+.gate-final[hidden]{display:none}
+.gf-card{
+  width:min(380px,100%);padding:22px 20px 18px;border-radius:26px;text-align:center;
+  background:linear-gradient(160deg,rgba(82,18,50,.98),rgba(24,4,15,.99));
+  border:1px solid rgba(255,111,174,.42);
+  box-shadow:0 28px 80px -26px rgba(255,47,125,.95),0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.gf-tag{
+  margin:0 0 10px;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--pink-300);
+}
+.gf-title{
+  margin:0 0 8px;font-family:var(--font-display);font-weight:600;
+  font-size:1.12rem;line-height:1.42;color:var(--ink);
+}
+.gf-sub{margin:0 0 14px;font-size:.76rem;line-height:1.5;color:rgba(255,214,234,.62)}
+.gf-form{display:flex;gap:8px}
+.gf-input{
+  flex:1;min-width:0;padding:12px 14px;border-radius:999px;
+  border:1px solid rgba(255,111,174,.3);background:rgba(255,255,255,.05);
+  color:var(--ink);font:inherit;font-size:.9rem;letter-spacing:.08em;
+  outline:none;transition:border-color .25s,box-shadow .25s;
+}
+.gf-input::placeholder{color:rgba(255,214,234,.32);letter-spacing:.02em}
+.gf-input:focus{border-color:rgba(255,111,174,.8);box-shadow:0 0 0 3px rgba(255,63,142,.14)}
+.gf-submit{
+  flex:none;padding:12px 18px;border:0;border-radius:999px;cursor:pointer;font:inherit;
+  font-size:.8rem;font-weight:600;color:#2a0616;
+  background:linear-gradient(135deg,#ffd9ec,#ff6fae 60%,#ff2f7d);
+  box-shadow:0 8px 22px -8px rgba(255,47,125,.95);
+  transition:transform .2s var(--ease),filter .2s;
+}
+.gf-submit:hover{transform:translateY(-1px) scale(1.03);filter:brightness(1.06)}
+.gf-submit:focus-visible{outline:2px solid var(--pink-300);outline-offset:3px}
+.gf-msg{margin:12px 0 0;font-size:.76rem;line-height:1.5;color:var(--pink-300)}
+.gf-msg.ok{color:var(--pink-200)}
+.gf-card.shake{animation:gateShake .45s ease}
+@media (max-width:420px){
+  .gf-form{flex-direction:column}
+  .gf-submit{padding:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .gf-card.shake{animation:none!important}
+}
 
 /* ---------- Ô nhập mật mã ---------- */
 .gate-pass{
@@ -1150,7 +1255,7 @@ body.ready .topbar{opacity:1;transform:none;pointer-events:auto}
 }
 .capsule-overlay.open{opacity:1;visibility:visible}
 .capsule-letter{
-  position:relative;width:min(680px,100%);max-height:86vh;overflow:auto;
+  position:relative;z-index:2;width:min(680px,100%);max-height:86vh;overflow:auto;
   padding:clamp(26px,5vw,54px);border-radius:10px;
   background:
     radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,.8), transparent 50%),
@@ -1186,7 +1291,7 @@ body.ready .topbar{opacity:1;transform:none;pointer-events:auto}
   font-family:var(--font-display);font-style:italic;font-size:1.15rem;color:#8a2352 !important;
 }
 .capsule-close{
-  position:fixed;top:max(14px,env(safe-area-inset-top));right:14px;z-index:2;
+  position:fixed;top:max(14px,env(safe-area-inset-top));right:14px;z-index:4;
   width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
   font-size:1.6rem;line-height:1;color:#fff;cursor:pointer;
   border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
@@ -1194,6 +1299,28 @@ body.ready .topbar{opacity:1;transform:none;pointer-events:auto}
   transition:background .3s, transform .3s;
 }
 .capsule-close:hover{background:rgba(255,111,174,.25);transform:rotate(90deg)}
+
+/* Mưa tim khi mở lá thư */
+.heart-rain{
+  position:absolute;inset:0;z-index:3;overflow:hidden;pointer-events:none;
+}
+.rain-heart{
+  position:absolute;top:0;left:var(--x,50%);
+  font-size:var(--s,14px);line-height:1;
+  color:var(--c,#ff6fae);
+  will-change:transform,opacity;
+  filter:drop-shadow(0 0 9px rgba(255,63,142,.5));
+  animation:heartRain var(--d,6s) linear var(--delay,0s) both;
+}
+@keyframes heartRain{
+  0%{opacity:0;transform:translate3d(0,-14vh,0) rotate(0deg)}
+  12%{opacity:var(--o,.8)}
+  85%{opacity:var(--o,.8)}
+  100%{opacity:0;transform:translate3d(var(--dx,0px),112vh,0) rotate(var(--r,60deg))}
+}
+@media (prefers-reduced-motion:reduce){
+  .rain-heart{animation:none!important;display:none}
+}
 
 /* ---------- Khoảng cách ---------- */
 .dist-places{
@@ -1621,11 +1748,6 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     <h2 class="gate-names">Nho Nam <i>♡</i> Bé Như Ý</h2>
     <p class="gate-hint" id="gateHint">chạm vào trái tim để mở</p>
 
-    <div class="gate-quiz" id="gateQuiz" hidden>
-      <p class="gate-quiz-intro" id="gateQuizIntro">3 câu dễ ẹc thôi, trả lời thật lòng nha 💗</p>
-      <div class="gate-quiz-list" id="gateQuizList"></div>
-    </div>
-
     <form class="gate-pass" id="gatePass" autocomplete="off" hidden>
       <div class="gate-pass-row">
         <input class="gate-input" id="gateCode" type="password" inputmode="numeric"
@@ -1634,6 +1756,28 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
       </div>
       <p class="gate-error" id="gateError" role="alert" hidden>Sai mật mã rồi, thử lại nhé…</p>
     </form>
+  </div>
+
+  <div class="gate-quiz" id="gateQuiz" hidden>
+    <div class="gate-quiz-hud">
+      <p class="gate-quiz-intro" id="gateQuizIntro">trả lời đúng 3 câu nha, dễ ẹc à 💗</p>
+      <div class="gq-hearts" id="gateQuizHearts" aria-hidden="true"></div>
+    </div>
+    <div class="gq-stage" id="gqStage"></div>
+  </div>
+
+  <div class="gate-final" id="gateFinal" hidden>
+    <div class="gf-card">
+      <p class="gf-tag">câu cuối cùng thật đó, hứa 🤞</p>
+      <h3 class="gf-title">Đố em: mình đã yêu nhau bao nhiêu ngày rồi?</h3>
+      <p class="gf-sub">Trả lời đúng là được xem quà liền 😚</p>
+      <form class="gf-form" id="gfForm" autocomplete="off">
+        <input class="gf-input" id="gfInput" type="text" inputmode="numeric"
+               placeholder="nhập số ngày…" aria-label="Số ngày yêu nhau" maxlength="6" />
+        <button class="gf-submit" type="submit">Mở quà 🎁</button>
+      </form>
+      <p class="gf-msg" id="gfMsg" role="status" hidden></p>
+    </div>
   </div>
 </div>
 
@@ -1890,6 +2034,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
 <!-- ============ LÁ THƯ TRONG HỘP THƯ ============ -->
 <div class="capsule-overlay" id="capsuleModal" role="dialog" aria-modal="true" aria-label="Lá thư mở vào đêm mình gặp nhau" aria-hidden="true">
+  <div class="heart-rain" id="heartRain" aria-hidden="true"></div>
   <button class="capsule-close" id="capsuleClose" aria-label="Đóng">×</button>
   <article class="capsule-letter">
     <p class="capsule-letter-eyebrow" id="capsuleLetterEyebrow">Lá thư mở lúc 23:30 · 20.11.2026</p>
@@ -1996,7 +2141,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
     // Hộp thư chỉ mở đúng đêm gặp nhau
     capsule: {
-      openAt: '2026-11-20T23:30:00',   // đổi giờ/ngày mở thư tại đây
+      openAt: '2025-11-20T23:30:00',   // đổi giờ/ngày mở thư tại đây
       title: 'Lá thư mở vào đêm mình gặp nhau',
       note: '23:30 · 20.11.2026',
       letterTitle: 'Gửi bé Như Ý,',
@@ -3004,6 +3149,42 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
       const capSignEl = $('#capsuleSign');
       const capEyebrowEl = $('#capsuleLetterEyebrow');
 
+      /* Mưa tim rơi khi mở lá thư */
+      const rainHost = $('#heartRain');
+      const RAIN_COLORS = ['#ff2f7d', '#ff6fae', '#ff9ecb', '#ffd9ec', '#ffb3d6'];
+      let rainTimer = 0;
+
+      function spawnRainHeart() {
+        if (!rainHost || rainHost.childElementCount > 90) return;
+        const el = document.createElement('span');
+        el.className = 'rain-heart';
+        el.textContent = '♥';
+        el.style.setProperty('--x', (Math.random() * 100).toFixed(2) + '%');
+        el.style.setProperty('--s', (8 + Math.random() * 12).toFixed(1) + 'px');
+        el.style.setProperty('--d', (4.2 + Math.random() * 4.2).toFixed(2) + 's');
+        el.style.setProperty('--delay', (Math.random() * 1.2).toFixed(2) + 's');
+        el.style.setProperty('--o', (0.25 + Math.random() * 0.4).toFixed(2));
+        el.style.setProperty('--dx', ((Math.random() * 2 - 1) * 60).toFixed(0) + 'px');
+        el.style.setProperty('--r', ((Math.random() * 2 - 1) * 140).toFixed(0) + 'deg');
+        el.style.color = RAIN_COLORS[Math.floor(Math.random() * RAIN_COLORS.length)];
+        rainHost.appendChild(el);
+        el.addEventListener('animationend', () => el.remove(), { once: true });
+      }
+
+      function startHeartRain() {
+        if (reduceMotion || !rainHost) return;
+        stopHeartRain();
+        for (let i = 0; i < 22; i++) spawnRainHeart();
+        rainTimer = setInterval(() => {
+          spawnRainHeart();
+          if (Math.random() < 0.35) spawnRainHeart();
+        }, 260);
+      }
+
+      function stopHeartRain() {
+        if (rainTimer) { clearInterval(rainTimer); rainTimer = 0; }
+      }
+
       if (capBodyEl && Array.isArray(CAP.body)) {
         capBodyEl.innerHTML = CAP.body.map(p => '<p>' + escapeHtml(p) + '</p>').join('');
       }
@@ -3057,11 +3238,15 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
         capModal.classList.add('open');
         capModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('locked');
-        if (!reduceMotion) burst(VW / 2, VH / 2, 2.2);
+        if (!reduceMotion) {
+          burst(VW / 2, VH / 2, 2.2);
+          startHeartRain();
+        }
       }
 
       function closeCapsule() {
         if (!capModal || !capModal.classList.contains('open')) return;
+        stopHeartRain();
         capModal.classList.remove('open');
         capModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('locked');
@@ -3389,7 +3574,12 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   const gateHint = $('#gateHint');
   const gateQuiz = $('#gateQuiz');
   const gateQuizIntro = $('#gateQuizIntro');
-  const gateQuizList = $('#gateQuizList');
+  const gateQuizHearts = $('#gateQuizHearts');
+  const gqStage = $('#gqStage');
+  const gateFinal = $('#gateFinal');
+  const gfForm = $('#gfForm');
+  const gfInput = $('#gfInput');
+  const gfMsg = $('#gfMsg');
   const gatePass = $('#gatePass');
   const gateCode = $('#gateCode');
   const gateError = $('#gateError');
@@ -3435,80 +3625,248 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     'Huhu chọn lại đi mà 🥺',
     'Không là không được đâu nha 😌',
     'Anh không đồng ý với đáp án này 😝',
-    'Bé chọn sai rồi, đổi lại ngay 😠💕'
+    'Bé chọn sai rồi, đổi lại ngay 😠💕',
+    'Ơ kìa, bấm nhầm rồi đúng không? 😏',
+    'Trả lời sai là phải chịu phạt đó nha 🙈',
+    'Câu này dễ mà, nghĩ lại đi nào 💭',
+    'Anh buồn đó, chọn lại đi 💔',
+    'Sai bét rồi, nhưng anh vẫn thương 😚',
+    'Trời ơi, "không" là sao hả bé? 😭'
   ];
+
+  const QUIZ_TAUNTS_BAD = ['😝', '🙈', '😤', '❌', '🤨'];
+  const QUIZ_TAUNTS_OK = ['💖', '😍', '💘', '✨', '🥰'];
 
   let gateOpened = false;
   let quizShown = false;
   let quizSolved = false;
   let passShown = false;
 
+  let quizDeck = [];
+  let quizCorrect = 0;
+  let quizBusy = false;
+  let currentQ = '';
+  let currentCard = null;
+  let lastSpot = null;
+  let gfTries = 0;
+  let gfDone = false;
+
   function pickOne(list) {
     return list[Math.floor(Math.random() * list.length)];
   }
 
-  function pickQuestions(n) {
-    const copy = QUIZ_POOL.slice();
-    for (let i = copy.length - 1; i > 0; i--) {
+  function shuffle(list) {
+    for (let i = list.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      const t = copy[i]; copy[i] = copy[j]; copy[j] = t;
+      const t = list[i]; list[i] = list[j]; list[j] = t;
     }
-    return copy.slice(0, n);
+    return list;
   }
 
-  function renderQuiz() {
-    gateQuizList.innerHTML = '';
-    let answered = 0;
+  function buildHearts() {
+    gateQuizHearts.innerHTML = '';
+    for (let i = 0; i < QUIZ_SIZE; i++) {
+      const h = document.createElement('span');
+      h.className = 'gq-heart';
+      h.textContent = '♡';
+      gateQuizHearts.appendChild(h);
+    }
+  }
 
-    pickQuestions(QUIZ_SIZE).forEach(q => {
-      const card = document.createElement('div');
-      card.className = 'gq';
-      card.innerHTML =
+  function updateHearts() {
+    Array.prototype.forEach.call(gateQuizHearts.children, (h, i) => {
+      const on = i < quizCorrect;
+      if (on === h.classList.contains('on')) return;
+      h.classList.toggle('on', on);
+      h.textContent = on ? '♥' : '♡';
+    });
+  }
+
+  function drawQuestion() {
+    if (!quizDeck.length) quizDeck = shuffle(QUIZ_POOL.slice());
+    let q = quizDeck.shift();
+    if (q === currentQ && quizDeck.length) {
+      quizDeck.push(q);
+      q = quizDeck.shift();
+    }
+    return q;
+  }
+
+  /* chọn một chỗ ngẫu nhiên, tránh đứng yên một chỗ */
+  function pickSpot(w, h) {
+    const pad = 16;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const topMin = Math.min(112, vh * 0.3);
+    const maxX = Math.max(pad, vw - w - pad);
+    const maxY = Math.max(topMin, vh - h - pad);
+    const wantD = Math.min(vw, vh) * 0.3;
+    let best = null, bestD = -1;
+
+    for (let i = 0; i < 14; i++) {
+      const x = pad + Math.random() * Math.max(0, maxX - pad);
+      const y = topMin + Math.random() * Math.max(0, maxY - topMin);
+      const cx = x + w / 2, cy = y + h / 2;
+      const d = lastSpot ? Math.hypot(cx - lastSpot.x, cy - lastSpot.y) : Infinity;
+      if (d > bestD) { bestD = d; best = { x, y, cx, cy }; }
+      if (d > wantD) break;
+    }
+
+    lastSpot = { x: best.cx, y: best.cy };
+    return {
+      x: Math.round(best.x),
+      y: Math.round(best.y),
+      rot: Math.round((Math.random() * 10 - 5) * 10) / 10
+    };
+  }
+
+  function placeCard(card, w, h) {
+    const spot = pickSpot(w, h);
+    card.style.setProperty('--rot', spot.rot + 'deg');
+    card.style.left = spot.x + 'px';
+    card.style.top = spot.y + 'px';
+  }
+
+  function clampCard(card) {
+    if (!card || !card.isConnected) return;
+    const pad = 16;
+    const w = card.offsetWidth;
+    const h = card.offsetHeight;
+    const x = parseFloat(card.style.left) || 0;
+    const y = parseFloat(card.style.top) || 0;
+    card.style.left = Math.min(Math.max(x, pad), Math.max(pad, window.innerWidth - w - pad)) + 'px';
+    card.style.top = Math.min(Math.max(y, 12), Math.max(12, window.innerHeight - h - pad)) + 'px';
+  }
+
+  function popTaunt(card, text) {
+    if (reduceMotion || !card.isConnected) return;
+    const r = card.getBoundingClientRect();
+    const s = document.createElement('span');
+    s.className = 'gq-pop';
+    s.textContent = text;
+    s.style.left = (r.left + r.width / 2) + 'px';
+    s.style.top = (r.top + r.height / 2) + 'px';
+    gqStage.appendChild(s);
+    setTimeout(() => s.remove(), 1200);
+  }
+
+  function dismissCard(card, done) {
+    if (!card || !card.isConnected) {
+      if (done) done();
+      return;
+    }
+    if (card === currentCard) currentCard = null;
+    card.style.pointerEvents = 'none';
+    card.style.animation = 'gqOut .34s var(--ease) forwards';
+    setTimeout(() => {
+      card.remove();
+      if (done) done();
+    }, 330);
+  }
+
+  function mountQuestion() {
+    if (quizSolved || gateOpened) return;
+
+    const q = drawQuestion();
+    currentQ = q;
+
+    const card = document.createElement('div');
+    card.className = 'gq-card';
+    card.style.visibility = 'hidden';
+    card.innerHTML =
+      '<div class="gq-in">' +
         '<p class="gq-q">' + escapeHtml(q) + '</p>' +
         '<div class="gq-acts">' +
           '<button class="gq-btn gq-yes" type="button">Có chứ! 💖</button>' +
           '<button class="gq-btn gq-no" type="button">Không</button>' +
         '</div>' +
-        '<p class="gq-msg" hidden></p>';
+        '<p class="gq-msg" role="status" hidden></p>' +
+      '</div>';
+    gqStage.appendChild(card);
+    currentCard = card;
 
-      const yesBtn = card.querySelector('.gq-yes');
-      const noBtn = card.querySelector('.gq-no');
-      const msg = card.querySelector('.gq-msg');
-      let noTries = 0;
+    const yesBtn = card.querySelector('.gq-yes');
+    const noBtn = card.querySelector('.gq-no');
+    const msg = card.querySelector('.gq-msg');
 
-      yesBtn.addEventListener('click', () => {
-        if (card.classList.contains('done')) return;
-        card.classList.add('done');
-        card.classList.remove('bad');
-        msg.hidden = false;
-        msg.className = 'gq-msg ok';
-        msg.textContent = '✓ ' + pickOne(QUIZ_YES_MSGS);
-        answered++;
-        const left = QUIZ_SIZE - answered;
-        gateQuizIntro.textContent = left > 0
-          ? 'còn ' + left + ' câu nữa thôi nha 💗'
-          : 'ngoan quá, đang mở món quà... 🎁';
-        if (!reduceMotion) {
-          const r = yesBtn.getBoundingClientRect();
-          burst(r.left + r.width / 2, r.top + r.height / 2, 1.4);
-        }
-        if (answered === QUIZ_SIZE) setTimeout(finishQuiz, 700);
-      });
+    placeCard(card, card.offsetWidth, card.offsetHeight);
+    card.style.visibility = '';
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = '';
+    requestAnimationFrame(() => clampCard(card));
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => { if (card === currentCard) clampCard(card); });
+    }
 
-      noBtn.addEventListener('click', () => {
-        if (card.classList.contains('done')) return;
-        noTries++;
-        msg.hidden = false;
-        msg.className = 'gq-msg';
-        msg.textContent = pickOne(QUIZ_NO_MSGS);
-        card.classList.remove('bad');
-        void card.offsetWidth;
-        card.classList.add('bad');
-        noBtn.style.transform = 'scale(' + Math.max(0.74, 1 - noTries * 0.08) + ')';
-      });
-
-      gateQuizList.appendChild(card);
+    /* nút "Không" tinh nghịch né chuột vài lần cho vui */
+    let dodges = 0;
+    noBtn.addEventListener('pointerenter', e => {
+      if (card.dataset.locked || e.pointerType !== 'mouse' || dodges >= 3) return;
+      dodges++;
+      const dx = 8 + dodges * 6;
+      const dy = (Math.random() * 2 - 1) * 8;
+      noBtn.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + (1 - dodges * 0.04) + ')';
+      if (dodges === 2) popTaunt(card, '😜');
     });
+
+    yesBtn.addEventListener('click', () => {
+      if (card.dataset.locked || card !== currentCard) return;
+      card.dataset.locked = '1';
+      card.classList.remove('bad');
+      msg.hidden = false;
+      msg.className = 'gq-msg ok';
+      msg.textContent = '✓ ' + pickOne(QUIZ_YES_MSGS);
+      popTaunt(card, pickOne(QUIZ_TAUNTS_OK));
+
+      quizCorrect++;
+      updateHearts();
+      if (!reduceMotion) {
+        const r = yesBtn.getBoundingClientRect();
+        burst(r.left + r.width / 2, r.top + r.height / 2, 1.5);
+      }
+
+      if (quizCorrect >= QUIZ_SIZE) {
+        completeQuiz();
+      } else {
+        gateQuizIntro.textContent = 'đúng rồi! còn ' + (QUIZ_SIZE - quizCorrect) + ' câu nữa thôi 💗';
+        setTimeout(() => dismissCard(card, mountQuestion), 780);
+      }
+    });
+
+    noBtn.addEventListener('click', () => {
+      if (card.dataset.locked || card !== currentCard) return;
+      card.dataset.locked = '1';
+      card.classList.remove('bad');
+      void card.offsetWidth;
+      card.classList.add('bad');
+      msg.hidden = false;
+      msg.className = 'gq-msg';
+      msg.textContent = pickOne(QUIZ_NO_MSGS);
+      popTaunt(card, pickOne(QUIZ_TAUNTS_BAD));
+      gateQuizIntro.textContent = 'hông tính đâu nha, câu khác liền nè 😜';
+
+      /* câu vừa trả lời sai được trả về bộ bài, lúc khác hỏi lại */
+      quizDeck.splice(Math.floor(Math.random() * (quizDeck.length + 1)), 0, currentQ);
+
+      setTimeout(() => dismissCard(card, mountQuestion), 1000);
+    });
+  }
+
+  function completeQuiz() {
+    if (quizSolved || gateOpened || quizBusy) return;
+    quizBusy = true;
+    updateHearts();
+    gateQuizIntro.textContent = 'đúng hết rồi, giỏi quá trời 🎉';
+    dismissCard(currentCard, null);
+
+    if (!reduceMotion) {
+      burst(window.innerWidth / 2, window.innerHeight * 0.44, 2.6);
+      setTimeout(() => burst(window.innerWidth * 0.28, window.innerHeight * 0.56, 1.5), 200);
+      setTimeout(() => burst(window.innerWidth * 0.72, window.innerHeight * 0.52, 1.5), 380);
+    }
+
+    setTimeout(finishQuiz, 1000);
   }
 
   function showQuiz() {
@@ -3521,8 +3879,17 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     quizShown = true;
     gate.classList.add('asking', 'quizzing');
     gateHint.textContent = 'trả lời thật lòng 3 câu nhỏ này đã nha 💗';
+    gate.scrollTop = 0;
     gateQuiz.hidden = false;
-    renderQuiz();
+
+    quizCorrect = 0;
+    quizBusy = false;
+    lastSpot = null;
+    currentQ = '';
+    quizDeck = shuffle(QUIZ_POOL.slice());
+    gateQuizIntro.textContent = 'trả lời đúng 3 câu nha, dễ ẹc à 💗';
+    buildHearts();
+    setTimeout(mountQuestion, 260);
   }
 
   function finishQuiz() {
@@ -3544,6 +3911,80 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
     setTimeout(() => gateCode.focus(), 120);
   }
 
+  /* ===== Câu đố chốt cuối: yêu nhau bao nhiêu ngày ===== */
+
+  function loveDays() {
+    return Math.max(0, Math.floor((Date.now() - startMs) / 86400000));
+  }
+
+  function showFinalQuestion() {
+    if (gateOpened || gfDone || !gateFinal.hidden) return;
+    gatePass.hidden = true;
+    gate.classList.add('quizzing');
+    gateFinal.hidden = false;
+    gfTries = 0;
+    gfDone = false;
+    gfInput.value = '';
+    gfMsg.hidden = true;
+    gfMsg.textContent = '';
+    gfMsg.className = 'gf-msg';
+    setTimeout(() => gfInput.focus(), 180);
+    if (!reduceMotion) burst(window.innerWidth / 2, window.innerHeight * 0.42, 1.2);
+  }
+
+  function submitFinal() {
+    if (gfDone || gateOpened) return;
+
+    const days = loveDays();
+    const raw = (gfInput.value || '').replace(/[^\d]/g, '');
+    const guess = raw ? parseInt(raw, 10) : NaN;
+    const ok = guess === days || guess === days + 1;
+    const card = gateFinal.querySelector('.gf-card');
+    gfMsg.hidden = false;
+
+    if (ok) {
+      gfDone = true;
+      gfMsg.className = 'gf-msg ok';
+      gfMsg.textContent = '✓ Chuẩn luôn! Mình yêu nhau ' + days.toLocaleString('vi-VN') + ' ngày rồi đó 🥰';
+      gateHint.textContent = 'đúng hết rồi, mở quà thôi 🎁';
+      if (!reduceMotion) {
+        burst(window.innerWidth / 2, window.innerHeight * 0.5, 2.4);
+        setTimeout(() => burst(window.innerWidth * 0.3, window.innerHeight * 0.55, 1.4), 220);
+        setTimeout(() => burst(window.innerWidth * 0.7, window.innerHeight * 0.48, 1.4), 400);
+      }
+      setTimeout(openGate, 1150);
+      return;
+    }
+
+    gfTries++;
+    gfMsg.className = 'gf-msg';
+    if (gfTries === 1) {
+      gfMsg.textContent = 'Sai rồi nha 😝 Nghĩ kỹ đi nào 💭';
+    } else if (gfTries === 2) {
+      gfMsg.textContent = 'Vẫn chưa đúng 🥺 Thử tính lại xem, gần đúng rồi đó!';
+    } else {
+      gfMsg.textContent = pickOne([
+        'Vẫn sai rồi 😤 Không nhớ là không được vào đâu nha 😝',
+        'Hmm... vẫn chưa đúng 🥴 Ráng nhớ lại đi, cửa vẫn đóng nha 😌',
+        'Sai nữa là anh giận đó 😤 Nghĩ tiếp đi nào!',
+        'Chưa đúng đâu 😛 Yêu nhau bao nhiêu ngày mà không nhớ hả em? 😭'
+      ]);
+    }
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    gfInput.select();
+  }
+
+  gfForm.addEventListener('submit', e => {
+    e.preventDefault();
+    submitFinal();
+  });
+
+  gfInput.addEventListener('input', () => {
+    gfInput.value = gfInput.value.replace(/[^\d]/g, '').slice(0, 6);
+  });
+
   function rejectCode() {
     gateError.hidden = false;
     gatePass.classList.remove('shake');
@@ -3558,6 +3999,7 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
 
     gatePass.hidden = true;
     gateQuiz.hidden = true;
+    gateFinal.hidden = true;
     gate.classList.add('opening');
     document.body.classList.remove('locked');
     document.body.classList.add('ready');
@@ -3574,8 +4016,9 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
   gatePass.addEventListener('submit', e => {
     e.preventDefault();
     if ((gateCode.value || '').trim() === GATE_CODE) {
+      if (!quizSolved) return;
       gateError.hidden = true;
-      openGate();
+      showFinalQuestion();
     } else {
       rejectCode();
     }
@@ -3592,6 +4035,8 @@ body.ready .hero [data-anim]{opacity:1;transform:none;filter:none}
       showQuiz();
     }
   });
+
+  window.addEventListener('resize', () => clampCard(currentCard));
 
   /* ============================================================
      THANH TIẾN TRÌNH
